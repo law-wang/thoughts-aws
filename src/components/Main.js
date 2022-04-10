@@ -8,6 +8,7 @@ import Login from './Auth'
 import BlogPage from './BlogPage'
 import PostPage from './PostPage'
 import BlogCreate from './BlogCreate'
+import Listing from './Listing'
 import '../style.css'
 
 
@@ -24,6 +25,7 @@ function Main() {
         setBlogs(blogData)
         // fetch the current signed in user
         const user = await Auth.currentAuthenticatedUser()
+        console.log(user)
         // check to see if they're a member of the admin user group
         setIsAdmin(user.signInUserSession.accessToken.payload['cognito:groups'].includes('admin'))
         setUser(user)
@@ -39,13 +41,9 @@ function Main() {
       <Routes>
         <Route path='/login' element={<Login />} />
         <Route path='/create' element={<BlogCreate isAdmin={isAdmin} />} />
-        {/* <Route path='/blog/:name'>
-          <BlogPage user={user} />
-        </Route>
-        <Route path='/post/:name'>
-          <PostPage user={user} />
-        </Route> */}
-        <Route exact path='/' element={<BlogPage />} />
+        <Route path='/blog/:name' element={<BlogPage user={user} />} />
+        <Route path='/post/:num' element={<PostPage user={user} />} />
+        <Route exact path='/' element={<Listing isAdmin={isAdmin} blogs={blogs} />} />
       </Routes>
     </div>
   )

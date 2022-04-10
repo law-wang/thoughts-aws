@@ -1,3 +1,9 @@
+enum Tag {
+  PLAYLISTS
+  THOUGHTS
+  QUOTES
+}
+
 type Blog @model @auth(rules: [{allow: public, operations: [read]}, {allow: groups, groups: ["admin"], operations: [read, create, update, delete]}]) {
   id: ID!
   name: String!
@@ -7,7 +13,9 @@ type Blog @model @auth(rules: [{allow: public, operations: [read]}, {allow: grou
 type Post @model @auth(rules: [{allow: public, operations: [read]}, {allow: owner}]) {
   id: ID!
   content: String!
-  tag: String!
+  tag: Tag!
+  createdAt: AWSDateTime!
+  num: Int!
   blogID: ID! @index(name: "byBlog")
 }
  

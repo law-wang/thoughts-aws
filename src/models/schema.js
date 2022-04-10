@@ -104,7 +104,23 @@ export const schema = {
                 "tag": {
                     "name": "tag",
                     "isArray": false,
-                    "type": "String",
+                    "type": {
+                        "enum": "Tag"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "num": {
+                    "name": "num",
+                    "isArray": false,
+                    "type": "Int",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -114,14 +130,6 @@ export const schema = {
                     "type": "ID",
                     "isRequired": true,
                     "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
                 },
                 "updatedAt": {
                     "name": "updatedAt",
@@ -176,7 +184,16 @@ export const schema = {
             ]
         }
     },
-    "enums": {},
+    "enums": {
+        "Tag": {
+            "name": "Tag",
+            "values": [
+                "PLAYLISTS",
+                "THOUGHTS",
+                "QUOTES"
+            ]
+        }
+    },
     "nonModels": {},
-    "version": "7f0ed117c3d1eaabbd6bf37e036b73f9"
+    "version": "40d1f0aaa99185fc1faf26575f352d66"
 };

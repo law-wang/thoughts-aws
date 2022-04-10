@@ -23,7 +23,7 @@ export default function BlogPage ({ user }) {
   }, [])
 
   const createPost = async () => {
-    const tag = window.prompt('title')
+    const tag = window.prompt('tag')
     const content = window.prompt('content')
  
     const newPost = await DataStore.save(new Post({
@@ -40,8 +40,8 @@ export default function BlogPage ({ user }) {
       {
         posts.map(post => (
           <h2 key={post.id}>
-            <Link to={`/post/${post.title}`}>
-              {post.title}
+            <Link to={`/post/${post.id}`}>
+              {post.tag}
             </Link>
           </h2>)
         )

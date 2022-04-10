@@ -11,7 +11,6 @@ export default function BlogCreate ({ isAdmin }) {
     const newBlog = await DataStore.save(new Blog({
       name
     }))
-    console.log(newBlog)
   }
 
   if (!isAdmin) {
