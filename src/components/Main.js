@@ -1,7 +1,7 @@
 import { Auth } from 'aws-amplify'
 import { DataStore } from '@aws-amplify/datastore'
 import { useEffect, useState } from 'react'
-import { Router, Route, Link } from 'react-router-dom'
+import { Routes, Route, Link } from 'react-router-dom'
 
 import { Blog } from '../models'
 import Login from './Auth'
@@ -36,32 +36,29 @@ function Main() {
 
   return (
     <div className='Main'>
-      <Router>
-        <Route path='/login'>
-          <Login />
-        </Route>
-        <Route path='/create'>
-          <BlogCreate isAdmin={isAdmin} />
-        </Route>
-        <Route path='/blog/:name'>
+      <Routes>
+        <Route path='/login' element={<Login />} />
+        <Route path='/create' element={<BlogCreate isAdmin={isAdmin} />} />
+        {/* <Route path='/blog/:name'>
           <BlogPage user={user} />
         </Route>
         <Route path='/post/:name'>
           <PostPage user={user} />
-        </Route>
-        <Route path='/' exact>
-          <h1>Thoughts</h1>
+        </Route> */}
+        <Route exact path='/' element={<BlogPage />} />
+      </Routes>
+    </div>
+  )
+}
+
+export default Main
+
+
+{/* <h1>Thoughts</h1>
           {isAdmin && <Link to='/blog/create'>Create a Blog</Link>}
 
           {blogs.map(blog => (
             <Link to={`/blog/${blog.name}`} key={blog.id}>
               <h2>{blog.name}</h2>
             </Link>
-          ))}
-        </Route>
-      </Router>
-    </div>
-  )
-}
-
-export default Main
+          ))} */}
