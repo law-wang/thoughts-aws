@@ -6,7 +6,8 @@ type Blog @model @auth(rules: [{allow: public, operations: [read]}, {allow: grou
 
 type Post @model @auth(rules: [{allow: public, operations: [read]}, {allow: owner}]) {
   id: ID!
-  dat: AWSDateTime!
+  content: String!
+  tag: String!
   blogID: ID! @index(name: "byBlog")
 }
  

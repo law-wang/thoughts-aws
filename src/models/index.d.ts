@@ -24,7 +24,8 @@ export declare class Blog {
 
 export declare class Post {
   readonly id: string;
-  readonly dat: string;
+  readonly content: string;
+  readonly tag: string;
   readonly blogID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;

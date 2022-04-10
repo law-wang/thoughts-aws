@@ -1,4 +1,4 @@
-import { withAuthenticator } from '@aws-amplify/ui-react'
+import { withAuthenticator } from 'aws-amplify'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
