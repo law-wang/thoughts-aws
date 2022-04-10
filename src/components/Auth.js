@@ -1,11 +1,16 @@
+import { withAuthenticator } from '@aws-amplify/ui-react'
+import React from 'react'
+import { Link } from 'react-router-dom'
+
 import '../style.css'
 
 function Auth() {
   return (
     <div>
-      authenticate
+      <h1>Hello!</h1>
+      <Link to='/'>home</Link>
     </div>
   )
 }
 
-export default Auth
+export default withAuthenticator(Auth)
