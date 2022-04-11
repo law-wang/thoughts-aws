@@ -1,5 +1,5 @@
-import { withAuthenticator } from '@aws-amplify/ui-react'
 import React from 'react'
+import { withAuthenticator } from '@aws-amplify/ui-react'
 import { Link } from 'react-router-dom'
 
 import '../style.css'

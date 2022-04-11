@@ -2,29 +2,18 @@ import { DataStore, API } from 'aws-amplify'
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 
-import { Post, Blog } from '../models'
+import { Post } from '../models'
 import PostPage from './PostPage'
+import '../style.css'
 
 function BlogPage ({ user, blog }) {
+
     const [posts, setPosts] = useState([])
+    const [currentPost, setCurrentPost] = useState({content:""})
+
     useEffect(() => {
         const getData = async () => {
-        // find all the posts whose blogID matches that of blog
-        //   const posts = await DataStore.query(Post, p => p.blogID('eq', blog.id))
-        //   setPosts(posts)
-
-        //   const posts = await API.graphql(`query posts {
-        //     listPosts(filter: {blogID: {eq: "c7bd2b1f-363c-4e2c-85b6-d89da59225bf"}}) {
-        //       items {
-        //         content
-        //         num
-        //         tag
-        //         createdAt
-        //       }
-        //     }
-        //   }`)
-
-            // const posts = await DataStore.query(Post);
+            // query all the posts
             const posts = await DataStore.query(Post)
             setPosts(posts)
         }
@@ -55,34 +44,24 @@ function BlogPage ({ user, blog }) {
         return dateString
     }
 
-    // posts.map(post => (
-    //     post.date = convertDate(post.createdAt)
-    // )
-
-    console.log(blog)
-    console.log(posts)
-    console.log(user)
-
     return (
-        <div id='container'>
-            <button onClick={filterPosts("all")}>All</button>
-            <button onClick={filterPosts("thoughts")}>Thoughts</button>
-            <button onClick={filterPosts("playlists")}>Playlists</button>
-            <button onClick={filterPosts("quotes")}>Quotes</button>
-            {user && <button onClick={createPost}>New</button>}
+        <div id='overall'>
+            <nav>
+                <button onClick={filterPosts("all")}>All</button>
+                <button onClick={filterPosts("thoughts")}>Thoughts</button>
+                <button onClick={filterPosts("playlists")}>Playlists</button>
+                <button onClick={filterPosts("quotes")}>Quotes</button>
+                {user && <button onClick={createPost}>New</button>}
+            </nav>
 
-            {
-                posts.map(post => (
+            {posts.map(post => (
                 <h2 key={post.id}>
-                    <Link to={`/post/${post.num}`}>
-                    {post.createdAt}
-                    </Link>
+                    <button onClick={e => setCurrentPost(post)}>{post.createdAt}</button>
                 </h2>)
-                )
-            }
+            )}
 
             <div id="post-content">
-                <PostPage />
+                <PostPage post={currentPost} />
             </div>
         </div>
     )
