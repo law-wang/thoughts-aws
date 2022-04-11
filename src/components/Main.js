@@ -32,8 +32,6 @@ function Main() {
         setIsAdmin(user.signInUserSession.accessToken.payload['cognito:groups'].includes('admin'))
         setUser(user)
 
-        // const postData = await DataStore.query(Post, p => p.blogID('eq', blogs[0].id))
-        // setPosts(postData)
         const posts = await DataStore.query(Post)
         setPosts(posts)
 
@@ -52,9 +50,9 @@ function Main() {
     <div className='Main'>
       <Routes>
         <Route path='/login' element={<Login />} />
-        <Route path='/create' element={<BlogCreate isAdmin={isAdmin} />} />
+        {/* <Route path='/create' element={<BlogCreate isAdmin={isAdmin} />} />
         <Route path='/blog/:name' element={<BlogPage user={user} />} />
-        <Route path='/post/:num' element={<PostPage user={user} />} />
+        <Route path='/post/:num' element={<PostPage user={user} />} /> */}
         <Route exact path='/' element={<BlogPage user={isAdmin} blog={blogs[0]} />} />
       </Routes>
     </div>
