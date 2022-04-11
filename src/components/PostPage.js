@@ -14,6 +14,7 @@ export default function PostPage ({ user }) {
   const handleSubmit = async e => {
     e.preventDefault()
   }
+  
   return (
     <div>
       <h1>{name}</h1>

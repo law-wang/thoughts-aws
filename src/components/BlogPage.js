@@ -1,47 +1,60 @@
-import { DataStore } from 'aws-amplify'
+import { DataStore, API } from 'aws-amplify'
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 
 import { Post, Blog } from '../models'
 
-export default function BlogPage ({ user }) {
-  const { name } = useParams()
-
-  // body of BlogPage component inside BlogPage.js
-  const [blog, setBlog] = useState({})
+export default function BlogPage ({ user, blog }) {
   const [posts, setPosts] = useState([])
   useEffect(() => {
     const getData = async () => {
-      // find the blog whose name equals the one in the url
-      const data = await DataStore.query(Blog, p => p.name('eq', name))
-      setBlog(data[0].id)
-      // find all the posts whose blogID matches the above post's id
-      const posts = await DataStore.query(Post, p => p.blogID('eq', data[0].id))
+      // find all the posts whose blogID matches that of blog
+    //   const posts = await DataStore.query(Post, p => p.blogID('eq', blog.id))
+    //   setPosts(posts)
+
+    //   const posts = await API.graphql(`query posts {
+    //     listPosts(filter: {blogID: {eq: "c7bd2b1f-363c-4e2c-85b6-d89da59225bf"}}) {
+    //       items {
+    //         content
+    //         num
+    //         tag
+    //         createdAt
+    //       }
+    //     }
+    //   }`)
+
+        // const posts = await DataStore.query(Post);
+        const posts = await DataStore.query(Post)
       setPosts(posts)
     }
     getData()
   }, [])
 
-  const createPost = async () => {
-    const tag = window.prompt('tag')
-    const content = window.prompt('content')
- 
-    const newPost = await DataStore.save(new Post({
-       content,
-       tag,
-       blogID: blog.id
-    }))
+    const createPost = async () => {
+        const tag = window.prompt('tag')
+        const content = window.prompt('content')
+    
+        const newPost = await DataStore.save(new Post({
+            content,
+            tag,
+            blogID: blog.id,
+            createdAt: new Date().toISOString(),
+            num: posts.length + 1
+        }))
   }
+
+  console.log(blog)
+  console.log(posts)
+  console.log(user)
 
   return (
     <div>
-      <h1>{name}</h1>
       {user && <button onClick={createPost}>create new post</button>}
       {
         posts.map(post => (
           <h2 key={post.id}>
-            <Link to={`/post/${post.id}`}>
-              {post.tag}
+            <Link to={`/post/${post.num}`}>
+              {post.content}
             </Link>
           </h2>)
         )
