@@ -2,20 +2,31 @@ import { DataStore, API } from 'aws-amplify'
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 
-import { Post } from '../models'
-import PostPage from './PostPage'
+import { Tag, Post } from '../models'
 import '../style.css'
 
 function BlogPage ({ user, blog }) {
 
     const [posts, setPosts] = useState([])
+    const [allposts, setAllPosts] = useState([])
+    const [thoughts, setThoughts] = useState([])
+    const [playlists, setPlaylists] = useState([])
+    const [quotes, setQuotes] = useState([])
     const [currentPost, setCurrentPost] = useState({content:""})
 
     useEffect(() => {
         const getData = async () => {
-            // query all the posts
+            // query all the posts, and posts by tag
             const posts = await DataStore.query(Post)
+            const thoughts = await DataStore.query(Post, p => p.tag("eq", Tag.THOUGHTS))
+            const playlists = await DataStore.query(Post, p => p.tag("eq", Tag.PLAYLISTS))
+            const quotes = await DataStore.query(Post, p => p.tag("eq", Tag.QUOTES))
+            
             setPosts(posts)
+            setAllPosts(posts)
+            setThoughts(thoughts)
+            setPlaylists(playlists)
+            setQuotes(quotes)
         }
         getData()
     }, [])
@@ -34,7 +45,19 @@ function BlogPage ({ user, blog }) {
     }
 
     const filterPosts = (tag) => {
-
+        if (tag == "thoughts") {
+            setPosts(thoughts)
+            setCurrentPost({content:""})
+        } else if (tag == "playlists") {
+            setPosts(playlists)
+            setCurrentPost({content:""})
+        } else if (tag == "quotes") {
+            setPosts(quotes)
+            setCurrentPost({content:""})
+        } else if (tag == "all") {
+            setPosts(allposts)
+            setCurrentPost({content:""})
+        }
     }
 
     const convertDate = async (isoDate) => {
@@ -47,21 +70,23 @@ function BlogPage ({ user, blog }) {
     return (
         <div id='overall'>
             <nav>
-                <button onClick={filterPosts("all")}>All</button>
-                <button onClick={filterPosts("thoughts")}>Thoughts</button>
-                <button onClick={filterPosts("playlists")}>Playlists</button>
-                <button onClick={filterPosts("quotes")}>Quotes</button>
+                <button onClick={e => filterPosts("all")}>All</button>
+                <button onClick={e => filterPosts("thoughts")}>Thoughts</button>
+                <button onClick={e => filterPosts("playlists")}>Playlists</button>
+                <button onClick={e => filterPosts("quotes")}>Quotes</button>
                 {user && <button onClick={createPost}>New</button>}
             </nav>
 
-            {posts.map(post => (
-                <h2 key={post.id}>
-                    <button onClick={e => setCurrentPost(post)}>{post.createdAt}</button>
-                </h2>)
-            )}
+            <div id="post-list">
+                {posts.map(post => (
+                    <h2 key={post.id}>
+                        <button onClick={e => setCurrentPost(post)}>{post.createdAt}</button>
+                    </h2>)
+                )}
+            </div>
 
             <div id="post-content">
-                <PostPage post={currentPost} />
+                {currentPost.content}
             </div>
         </div>
     )
