@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { DataStore } from 'aws-amplify'
+import { DataStore } from '@aws-amplify/datastore'
 
 import { Tag, Post } from '../models'
 import '../style.css'

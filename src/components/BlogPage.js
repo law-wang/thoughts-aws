@@ -1,5 +1,5 @@
-import { DataStore } from 'aws-amplify'
-import { Hub } from "@aws-amplify/core";
+import { DataStore } from '@aws-amplify/datastore'
+import { Hub } from "@aws-amplify/core"
 import { useEffect, useState } from 'react'
 
 import { Tag, Post } from '../models'
