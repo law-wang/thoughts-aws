@@ -1,6 +1,5 @@
-import { DataStore, API } from 'aws-amplify'
+import { DataStore } from 'aws-amplify'
 import { useEffect, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
 
 import { Tag, Post } from '../models'
 import '../style.css'
@@ -16,12 +15,13 @@ function BlogPage ({ user, blog }) {
 
     useEffect(() => {
         const getData = async () => {
-            // query all the posts, and posts by tag
+            // query all the posts and posts by tag
             const posts = await DataStore.query(Post)
             const thoughts = await DataStore.query(Post, p => p.tag("eq", Tag.THOUGHTS))
             const playlists = await DataStore.query(Post, p => p.tag("eq", Tag.PLAYLISTS))
             const quotes = await DataStore.query(Post, p => p.tag("eq", Tag.QUOTES))
             
+            // set all posts states
             setPosts(posts)
             setAllPosts(posts)
             setThoughts(thoughts)
@@ -30,19 +30,6 @@ function BlogPage ({ user, blog }) {
         }
         getData()
     }, [])
-
-    const createPost = async () => {
-        const tag = window.prompt('tag')
-        const content = window.prompt('content')
-    
-        const newPost = await DataStore.save(new Post({
-            content,
-            tag,
-            blogID: blog.id,
-            createdAt: new Date().toISOString(),
-            num: posts.length + 1
-        }))
-    }
 
     const filterPosts = (tag) => {
         if (tag == "thoughts") {
@@ -60,10 +47,9 @@ function BlogPage ({ user, blog }) {
         }
     }
 
-    const convertDate = async (isoDate) => {
-        await isoDate
+    const convertDate = isoDate => {
         const date = new Date(isoDate)
-        let dateString = date.getDate() + " " + date.toLocaleString('default', { month: 'long' }) + " " + date.getFullYear() + " " + isoDate.substr(11, 19)
+        let dateString = date.getDate() + " " + date.toLocaleString('default', { month: 'long' }) + " " + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
         return dateString
     }
 
@@ -74,13 +60,12 @@ function BlogPage ({ user, blog }) {
                 <button onClick={e => filterPosts("thoughts")}>Thoughts</button>
                 <button onClick={e => filterPosts("playlists")}>Playlists</button>
                 <button onClick={e => filterPosts("quotes")}>Quotes</button>
-                {user && <button onClick={createPost}>New</button>}
             </nav>
 
             <div id="post-list">
                 {posts.map(post => (
                     <h2 key={post.id}>
-                        <button onClick={e => setCurrentPost(post)}>{post.createdAt}</button>
+                        <button onClick={e => setCurrentPost(post)}>{post.createdAt ? convertDate(post.createdAt) : "a note"}</button>
                     </h2>)
                 )}
             </div>

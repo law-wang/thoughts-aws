@@ -1,7 +1,7 @@
 import { Auth } from 'aws-amplify'
 import { DataStore } from '@aws-amplify/datastore'
 import { useEffect, useState } from 'react'
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 
 import { Post, Blog } from '../models'
 import Login from './Auth'

@@ -1,19 +1,11 @@
 import React from 'react'
-import { withAuthenticator, Authenticator } from '@aws-amplify/ui-react'
-// import { Authenticator, SignIn, SignUp, ConfirmSignUp, Greetings } from 'aws-amplify-react' 
-import { Link } from 'react-router-dom'
+import { Authenticator } from '@aws-amplify/ui-react'
 
 import '../style.css'
 
-function Auth({ signOut, user }) {
+function Auth() {
   return (
     <div>
-      {/* <h1>Hello!</h1> */}
-      {/* <AmplifyAuthenticator>
-        <AmplifySignIn slot="sign-in">
-          <div slot="secondary-footer-content"></div>
-        </AmplifySignIn>
-      </AmplifyAuthenticator> */}
       <Authenticator hideSignUp>
         {({ signOut, user }) => (
           <main>
@@ -22,11 +14,6 @@ function Auth({ signOut, user }) {
           </main>
         )}
       </Authenticator>
-      {/* <AmplifyAuthenticator>
-        <AmplifySignIn slot="sign-in" hideSignUp></AmplifySignIn>
-      </AmplifyAuthenticator>
-      <Link to='/'>home</Link>
-      <button onClick={signOut}>Sign out</button> */}
     </div>
   )
 }
