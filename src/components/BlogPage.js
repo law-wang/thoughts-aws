@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { Tag, Post } from '../models'
 import '../style.css'
 
-function BlogPage ({ user, blog }) {
+function BlogPage () {
 
     const [posts, setPosts] = useState([])
     const [allposts, setAllPosts] = useState([])
@@ -32,16 +32,16 @@ function BlogPage ({ user, blog }) {
     }, [])
 
     const filterPosts = (tag) => {
-        if (tag == "thoughts") {
+        if (tag === "thoughts") {
             setPosts(thoughts)
             setCurrentPost({content:""})
-        } else if (tag == "playlists") {
+        } else if (tag === "playlists") {
             setPosts(playlists)
             setCurrentPost({content:""})
-        } else if (tag == "quotes") {
+        } else if (tag === "quotes") {
             setPosts(quotes)
             setCurrentPost({content:""})
-        } else if (tag == "all") {
+        } else if (tag === "all") {
             setPosts(allposts)
             setCurrentPost({content:""})
         }
