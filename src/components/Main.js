@@ -6,6 +6,7 @@ import { Routes, Route, Link } from 'react-router-dom'
 import { Post, Blog } from '../models'
 import Login from './Auth'
 import BlogPage from './BlogPage'
+import CreatePost from './CreatePost'
 import '../style.css'
 
 function Main() {
@@ -37,11 +38,12 @@ function Main() {
     }
     getData()
   }, [])
-  
+
   return (
     <div className='Main'>
       <Routes>
         <Route path='/login' element={<Login />} />
+        <Route path='/create' element={<CreatePost user={isAdmin} blog={blogs[0]} />} />
         <Route exact path='/' element={<BlogPage user={isAdmin} blog={blogs[0]} />} />
       </Routes>
     </div>
