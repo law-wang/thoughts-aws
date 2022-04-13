@@ -63,5 +63,12 @@
         ]
       }
     }
+  },
+  "storage": {
+    "s3thoughtsstorage6921f7e6": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
+    }
   }
 }

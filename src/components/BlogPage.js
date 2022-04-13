@@ -38,11 +38,13 @@ function BlogPage () {
         const listener = Hub.listen("datastore", async hubData => {
             const  { event, data } = hubData.payload
             console.log(event)
-            if (event === "modelSynced") {
-                console.log("datastore model synced in blogpage")
+            if (event === "ready") {
+                console.log("datastore ready in blogpage")
                 getData()
             }
         })
+
+        getData()
 
         return () => {
             listener()

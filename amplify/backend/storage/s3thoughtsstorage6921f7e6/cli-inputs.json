@@ -1,0 +1,12 @@
+{
+  "resourceName": "s3thoughtsstorage6921f7e6",
+  "bucketName": "thoughts-storage-6921f7e6",
+  "policyUUID": "c3c91d57",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "READ"
+  ]
+}

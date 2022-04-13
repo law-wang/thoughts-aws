@@ -29,7 +29,9 @@ const awsmobile = {
     },
     "aws_cognito_verification_mechanisms": [
         "EMAIL"
-    ]
+    ],
+    "aws_user_files_s3_bucket": "thoughts-storage-6921f7e615336-staging",
+    "aws_user_files_s3_bucket_region": "us-east-2"
 };
 
 

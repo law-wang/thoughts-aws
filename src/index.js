@@ -1,8 +1,9 @@
 import React from 'react'
-import { createRoot } from 'react-dom/client';
+import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router } from "react-router-dom"
 
-import Amplify, { AuthModeStrategyType } from 'aws-amplify'
+import Amplify from "@aws-amplify/core"
+import { AuthModeStrategyType } from 'aws-amplify'
 import awsconfig from './aws-exports'
 
 import Main from './components/Main'
