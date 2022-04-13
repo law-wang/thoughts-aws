@@ -16,25 +16,30 @@ function BlogPage () {
 
     useEffect(() => {
         const getData = async () => {
-            // query all the posts and posts by tag
-            const posts = await DataStore.query(Post)
-            const thoughts = await DataStore.query(Post, p => p.tag("eq", Tag.THOUGHTS))
-            const playlists = await DataStore.query(Post, p => p.tag("eq", Tag.PLAYLISTS))
-            const quotes = await DataStore.query(Post, p => p.tag("eq", Tag.QUOTES))
-            
-            // set all posts states
-            setPosts(posts)
-            setAllPosts(posts)
-            setThoughts(thoughts)
-            setPlaylists(playlists)
-            setQuotes(quotes)
+            try {
+                // query all the posts and posts by tag
+                const posts = await DataStore.query(Post)
+                const thoughts = await DataStore.query(Post, p => p.tag("eq", Tag.THOUGHTS))
+                const playlists = await DataStore.query(Post, p => p.tag("eq", Tag.PLAYLISTS))
+                const quotes = await DataStore.query(Post, p => p.tag("eq", Tag.QUOTES))
+                
+                // set all posts states
+                setPosts(posts)
+                setAllPosts(posts)
+                setThoughts(thoughts)
+                setPlaylists(playlists)
+                setQuotes(quotes)
+            } catch (err) {
+                console.error(err)
+            }
         }
 
         // listen for datastore to be fully loaded
         const listener = Hub.listen("datastore", async hubData => {
-            const  { event, data } = hubData.payload;
-            if (event === "ready") {
-                console.log("datastore ready in blogpage")
+            const  { event, data } = hubData.payload
+            console.log(event)
+            if (event === "modelSynced") {
+                console.log("datastore model synced in blogpage")
                 getData()
             }
         })
