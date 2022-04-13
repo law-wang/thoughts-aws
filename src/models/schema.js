@@ -131,6 +131,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "time": {
+                    "name": "time",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "updatedAt": {
                     "name": "updatedAt",
                     "isArray": false,
@@ -195,5 +202,5 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "version": "40d1f0aaa99185fc1faf26575f352d66"
+    "version": "40b45398457f544aa3bf6aa03b81b09c"
 };

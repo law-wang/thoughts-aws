@@ -33,6 +33,7 @@ export declare class Post {
   readonly createdAt: string;
   readonly num: number;
   readonly blogID: string;
+  readonly time: string;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<Post, PostMetaData>);
   static copyOf(source: Post, mutator: (draft: MutableModel<Post, PostMetaData>) => MutableModel<Post, PostMetaData> | void): Post;

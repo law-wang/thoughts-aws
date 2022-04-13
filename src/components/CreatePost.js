@@ -27,6 +27,7 @@ function CreatePost ({ user, blog }) {
             tag: data.Tag,
             blogID: blog.id,
             createdAt: new Date().toISOString(),
+            time: new Date().toISOString(),
             num: posts.length + 1
         }))
 

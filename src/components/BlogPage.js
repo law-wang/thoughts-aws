@@ -80,7 +80,7 @@ function BlogPage () {
                 <div id="post-list">
                     {posts.map(post => (
                         <h2 key={post.id}>
-                            <button onClick={e => setCurrentPost(post)}>{post.createdAt ? convertDate(post.createdAt) : "a note"}</button>
+                            <button onClick={e => setCurrentPost(post)}>{post.time ? convertDate(post.time) : "some time"}</button>
                         </h2>)
                     )}
                 </div>
