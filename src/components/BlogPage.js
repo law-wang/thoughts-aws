@@ -1,4 +1,5 @@
 import { DataStore } from 'aws-amplify'
+import { Hub } from "@aws-amplify/core";
 import { useEffect, useState } from 'react'
 
 import { Tag, Post } from '../models'
@@ -28,9 +29,22 @@ function BlogPage () {
             setPlaylists(playlists)
             setQuotes(quotes)
         }
-        getData()
+
+        // listen for datastore to be fully loaded
+        const listener = Hub.listen("datastore", async hubData => {
+            const  { event, data } = hubData.payload;
+            if (event === "ready") {
+                console.log("datastore ready in blogpage")
+                getData()
+            }
+        })
+
+        return () => {
+            listener()
+        }
     }, [])
 
+    // tag buttons to filter posts
     const filterPosts = (tag) => {
         if (tag === "thoughts") {
             setPosts(thoughts)
@@ -62,17 +76,19 @@ function BlogPage () {
                 <button onClick={e => filterPosts("quotes")}>Quotes</button>
             </nav>
 
-            <div id="post-list">
-                {posts.map(post => (
-                    <h2 key={post.id}>
-                        <button onClick={e => setCurrentPost(post)}>{post.createdAt ? convertDate(post.createdAt) : "a note"}</button>
-                    </h2>)
-                )}
-            </div>
+            <div id="post-grid">
+                <div id="post-list">
+                    {posts.map(post => (
+                        <h2 key={post.id}>
+                            <button onClick={e => setCurrentPost(post)}>{post.createdAt ? convertDate(post.createdAt) : "a note"}</button>
+                        </h2>)
+                    )}
+                </div>
 
-            <div id="post-content">
-                {currentPost.content}
-            </div>
+                <div id="post-content">
+                    {currentPost.content}
+                </div>
+            </div>   
         </div>
     )
 }
