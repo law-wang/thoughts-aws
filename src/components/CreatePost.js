@@ -26,7 +26,6 @@ function CreatePost ({ user, blog }) {
             content: data.Content,
             tag: data.Tag,
             blogID: blog.id,
-            createdAt: new Date().toISOString(),
             time: new Date().toISOString(),
             num: posts.length + 1
         }))
