@@ -1,5 +1,6 @@
 import { Auth } from 'aws-amplify'
-import { DataStore } from '@aws-amplify/datastore'
+import { Hub } from "@aws-amplify/core";
+import { DataStore, Predicates } from "@aws-amplify/datastore";
 import { useEffect, useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 
@@ -16,6 +17,30 @@ function Main() {
   const [user, setUser] = useState({})
 
   useEffect(() => {
+    // Create listener that will stop observing the model once the sync process is done
+    const removeListener = Hub.listen("datastore", async (capsule) => {
+      const {
+        payload: { event, data },
+      } = capsule;
+  
+      // console.log("DataStore event", event, data);
+  
+      if (event === "ready") {
+        // query for all blog posts, then store them in state
+        const blogData = await DataStore.query(Blog)
+        setBlogs(blogData)
+
+        // fetch the current signed in user
+        const user = await Auth.currentAuthenticatedUser()
+
+        // check to see if they're a member of the admin user group
+        setIsAdmin(user.signInUserSession.accessToken.payload['cognito:groups'].includes('admin'))
+        setUser(user)
+        console.log("readt")
+      }
+    })
+
+
     const getData = async () => {
       try {
         // query for all blog posts, then store them in state
@@ -33,7 +58,17 @@ function Main() {
         console.error(err)
       }
     }
-    getData()
+
+
+    // Start the DataStore, this kicks-off the sync process.
+    DataStore.start()
+    // getData()
+
+    // window.location.reload()
+    return () => {
+      removeListener()
+    }
+
   }, [])
 
   return (

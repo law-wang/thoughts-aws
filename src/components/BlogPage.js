@@ -49,7 +49,7 @@ function BlogPage () {
 
     const convertDate = isoDate => {
         const date = new Date(isoDate)
-        let dateString = date.getDate() + " " + date.toLocaleString('default', { month: 'long' }) + " " + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
+        let dateString = date.getDate() + " " + date.toLocaleString('default', { month: 'long' }) + " " + date.getFullYear() + " " + date.toString().substring(16, 25)
         return dateString
     }
 
