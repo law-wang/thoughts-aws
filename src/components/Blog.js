@@ -15,38 +15,65 @@ function Blog () {
     const [currentPost, setCurrentPost] = useState({content:""})
 
     useEffect(() => {
+        const start = async () => {
+            await DataStore.start()
+            // try {
+            //     // query all the posts and posts by tag
+            //     const posts = await DataStore.query(Post)
+            //     const thoughts = await DataStore.query(Post, p => p.tag("eq", Tag.THOUGHTS))
+            //     const playlists = await DataStore.query(Post, p => p.tag("eq", Tag.PLAYLISTS))
+            //     const quotes = await DataStore.query(Post, p => p.tag("eq", Tag.QUOTES))
+                
+            //     // set all posts states
+            //     setPosts(posts)
+            //     setAllPosts(posts)
+            //     setThoughts(thoughts)
+            //     setPlaylists(playlists)
+            //     setQuotes(quotes)
+
+            // } catch (err) {
+            //     console.error(err)
+            // }
+        }
+
         const getData = async () => {
             try {
-                // query all the posts and posts by tag
+                // query all posts and filter by tags
                 const posts = await DataStore.query(Post)
-                const thoughts = await DataStore.query(Post, p => p.tag("eq", Tag.THOUGHTS))
-                const playlists = await DataStore.query(Post, p => p.tag("eq", Tag.PLAYLISTS))
-                const quotes = await DataStore.query(Post, p => p.tag("eq", Tag.QUOTES))
-                
-                // set all posts states
+                const thoughts = posts.filter(p => {
+                    return p.tag === Tag.THOUGHTS
+                })
+                const playlists = posts.filter(p => {
+                    return p.tag === Tag.PLAYLISTS
+                })
+                const quotes = posts.filter(p => {
+                    return p.tag === Tag.QUOTES
+                })
+
                 setPosts(posts)
                 setAllPosts(posts)
                 setThoughts(thoughts)
-                setPlaylists(playlists)
                 setQuotes(quotes)
 
+                // ensure logging is correct
+                console.log(thoughts)
+                console.log(playlists)
+                console.log(quotes)
             } catch (err) {
                 console.error(err)
             }
         }
 
-        // listen for datastore to be fully loaded
+        // listen for datastore to be fully loaded, then make datastore queries
         const listener = Hub.listen("datastore", async hubData => {
             const  { event, data } = hubData.payload
             console.log(event)
             if (event === "ready") {
-                console.log("datastore ready for blog data")
-                // getData()
+                getData()
             }
         })
 
-        getData()
-
+        start()
         return () => {
             listener()
         }
