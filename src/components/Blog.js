@@ -36,37 +36,34 @@ function Blog () {
         }
 
         // listen for datastore to be fully loaded
-        // const listener = Hub.listen("datastore", async hubData => {
-        //     const  { event, data } = hubData.payload
-        //     console.log(event)
-        //     if (event === "ready") {
-        //         console.log("datastore ready in blogpage")
-        //         getData()
-        //     }
-        // })
+        const listener = Hub.listen("datastore", async hubData => {
+            const  { event, data } = hubData.payload
+            console.log(event)
+            if (event === "ready") {
+                console.log("datastore ready for blog data")
+                // getData()
+            }
+        })
 
         getData()
 
-        // return () => {
-        //     listener()
-        // }
+        return () => {
+            listener()
+        }
     }, [])
 
     // tag buttons to filter posts
     const filterPosts = (tag) => {
         if (tag === "thoughts") {
             setPosts(thoughts)
-            setCurrentPost({content:""})
         } else if (tag === "playlists") {
             setPosts(playlists)
-            setCurrentPost({content:""})
         } else if (tag === "quotes") {
             setPosts(quotes)
-            setCurrentPost({content:""})
         } else if (tag === "all") {
             setPosts(allposts)
-            setCurrentPost({content:""})
         }
+        setCurrentPost({content:""})
     }
 
     const convertDate = isoDate => {
