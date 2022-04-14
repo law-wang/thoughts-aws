@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { Tag, Post } from '../models'
 import '../style.css'
 
-function BlogPage () {
+function Blog () {
 
     const [posts, setPosts] = useState([])
     const [allposts, setAllPosts] = useState([])
@@ -29,26 +29,27 @@ function BlogPage () {
                 setThoughts(thoughts)
                 setPlaylists(playlists)
                 setQuotes(quotes)
+
             } catch (err) {
                 console.error(err)
             }
         }
 
         // listen for datastore to be fully loaded
-        const listener = Hub.listen("datastore", async hubData => {
-            const  { event, data } = hubData.payload
-            console.log(event)
-            if (event === "ready") {
-                console.log("datastore ready in blogpage")
-                getData()
-            }
-        })
+        // const listener = Hub.listen("datastore", async hubData => {
+        //     const  { event, data } = hubData.payload
+        //     console.log(event)
+        //     if (event === "ready") {
+        //         console.log("datastore ready in blogpage")
+        //         getData()
+        //     }
+        // })
 
         getData()
 
-        return () => {
-            listener()
-        }
+        // return () => {
+        //     listener()
+        // }
     }, [])
 
     // tag buttons to filter posts
@@ -91,12 +92,11 @@ function BlogPage () {
                 )}
             </div>
 
-                <div id="post-content">
-                    {currentPost.content}
-                </div>
-            </div>   
+            <div id="post-content">
+                {currentPost.content}
+            </div>
         </div>
     )
 }
 
-export default BlogPage
+export default Blog

@@ -1,66 +1,56 @@
 import { Auth } from 'aws-amplify'
-import { DataStore } from '@aws-amplify/datastore'
 import { Hub } from "@aws-amplify/core"
 import { useEffect, useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 
-import { Blog } from '../models'
 import Login from './Auth'
-import BlogPage from './BlogPage'
-import CreatePost from './CreatePost'
+import Blog from './Blog'
+import Create from './Create'
 
 import '../style.css'
 
 function Main() {
-  const [blogs, setBlogs] = useState([])
+
   const [isAdmin, setIsAdmin] = useState(false)
-  const [user, setUser] = useState({})
 
   useEffect(() => {
     const getData = async () => {
-      try {        
-        // query for all blog posts, then store them in state
-        const blogData = await DataStore.query(Blog)
-        setBlogs(blogData)
+        try {        
+            // fetch the current signed in user
+            // then, check to see if they're a member of the admin user group
+            const user = await Auth.currentAuthenticatedUser()
+            setIsAdmin(user.signInUserSession.accessToken.payload['cognito:groups'].includes('admin'))
+            setUser(user)
 
-        // fetch the current signed in user
-        const user = await Auth.currentAuthenticatedUser()
-
-        // check to see if they're a member of the admin user group
-        setIsAdmin(user.signInUserSession.accessToken.payload['cognito:groups'].includes('admin'))
-        setUser(user)
-
-      } catch (err) {
-        console.error(err)
-      }
+        } catch (err) {
+            console.error(err)
+        }
     }    
     const listener = Hub.listen("datastore", async hubData => {
-      console.log("start")
-      const  { event, data } = hubData.payload;
-      console.log(event)
-      console.log(data)
-      if (event === "ready") {
-        console.log("ready")
-        // do something here once the data is synced from the cloud
-      }
+        console.log("start")
+        const  { event, data } = hubData.payload;
+        console.log(event)
+        console.log(data)
+        if (event === "ready") {
+            console.log("ready")
+            // do something here once the data is synced from the cloud
+        }
     })
+
     getData()
 
 
     return () => {
-
-      listener()
+        listener()
     }
   }, [])
 
   return (
-    <div className='Main'>
-      <Routes>
+    <Routes>
         <Route path='/login' element={<Login />} />
-        <Route path='/create' element={<CreatePost user={isAdmin} blog={blogs[0]} />} />
-        <Route exact path='/' element={<BlogPage />} />
-      </Routes>
-    </div>
+        <Route path='/create' element={<Create user={isAdmin} />} />
+        <Route exact path='/' element={<Blog />} />
+    </Routes>
   )
 }
 

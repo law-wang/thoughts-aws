@@ -6,18 +6,9 @@ import { DataStore } from '@aws-amplify/datastore'
 import { Tag, Post } from '../models'
 import '../style.css'
 
-function CreatePost ({ user, blog }) {
+function Create ({ user }) {
 
-    const [posts, setPosts] = useState([])
     const { register, handleSubmit, formState: { errors }, reset } = useForm()
-
-    useEffect(() => {
-        const getData = async () => {
-            const posts = await DataStore.query(Post)
-            setPosts(posts)
-        }
-        getData()
-    }, [])
 
     const onSubmit = async (data) => {
         console.log(data)
@@ -25,9 +16,7 @@ function CreatePost ({ user, blog }) {
         const newPost = await DataStore.save(new Post({
             content: data.Content,
             tag: data.Tag,
-            blogID: blog.id,
-            time: new Date().toISOString(),
-            num: posts.length + 1
+            time: new Date().toISOString()
         }))
 
         reset()
@@ -42,8 +31,7 @@ function CreatePost ({ user, blog }) {
 
                 <input {...register("Tag", { required: true })} type="radio" value={Tag.THOUGHTS} /> Thoughts
                 <input {...register("Tag", { required: true })} type="radio" value={Tag.PLAYLISTS} /> Playlists
-                <input {...register("Tag", { required: true })} type="radio" value={Tag.QUOTES} />
- Quotes
+                <input {...register("Tag", { required: true })} type="radio" value={Tag.QUOTES} /> Quotes
                 <input type="submit" />
             </form>
         </div>
@@ -52,4 +40,4 @@ function CreatePost ({ user, blog }) {
     )
 }
 
-export default CreatePost
+export default Create

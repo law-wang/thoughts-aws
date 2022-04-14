@@ -1,38 +1,22 @@
 import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplify/datastore";
 
 export enum Tag {
-  PLAYLISTS = "PLAYLISTS",
   THOUGHTS = "THOUGHTS",
+  PLAYLISTS = "PLAYLISTS",
   QUOTES = "QUOTES"
 }
 
 
 
-type BlogMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
-
 type PostMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-export declare class Blog {
-  readonly id: string;
-  readonly name: string;
-  readonly posts?: (Post | null)[] | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-  constructor(init: ModelInit<Blog, BlogMetaData>);
-  static copyOf(source: Blog, mutator: (draft: MutableModel<Blog, BlogMetaData>) => MutableModel<Blog, BlogMetaData> | void): Blog;
-}
-
 export declare class Post {
   readonly id: string;
-  readonly content: string;
-  readonly tag: Tag | keyof typeof Tag;
-  readonly blogID: string;
   readonly time: string;
-  readonly num?: number | null;
+  readonly content?: string | null;
+  readonly tag?: Tag | keyof typeof Tag | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<Post, PostMetaData>);
