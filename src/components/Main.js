@@ -18,7 +18,7 @@ function Main() {
 
   useEffect(() => {
     const getData = async () => {
-      try {
+      try {        
         // query for all blog posts, then store them in state
         const blogData = await DataStore.query(Blog)
         setBlogs(blogData)

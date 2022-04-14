@@ -1,4 +1,5 @@
-import { DataStore } from 'aws-amplify'
+import { DataStore } from '@aws-amplify/datastore'
+import { Hub } from "@aws-amplify/core"
 import { useEffect, useState } from 'react'
 
 import { Tag, Post } from '../models'
@@ -15,22 +16,42 @@ function BlogPage () {
 
     useEffect(() => {
         const getData = async () => {
-            // query all the posts and posts by tag
-            const posts = await DataStore.query(Post)
-            const thoughts = await DataStore.query(Post, p => p.tag("eq", Tag.THOUGHTS))
-            const playlists = await DataStore.query(Post, p => p.tag("eq", Tag.PLAYLISTS))
-            const quotes = await DataStore.query(Post, p => p.tag("eq", Tag.QUOTES))
-            
-            // set all posts states
-            setPosts(posts)
-            setAllPosts(posts)
-            setThoughts(thoughts)
-            setPlaylists(playlists)
-            setQuotes(quotes)
+            try {
+                // query all the posts and posts by tag
+                const posts = await DataStore.query(Post)
+                const thoughts = await DataStore.query(Post, p => p.tag("eq", Tag.THOUGHTS))
+                const playlists = await DataStore.query(Post, p => p.tag("eq", Tag.PLAYLISTS))
+                const quotes = await DataStore.query(Post, p => p.tag("eq", Tag.QUOTES))
+                
+                // set all posts states
+                setPosts(posts)
+                setAllPosts(posts)
+                setThoughts(thoughts)
+                setPlaylists(playlists)
+                setQuotes(quotes)
+            } catch (err) {
+                console.error(err)
+            }
         }
+
+        // listen for datastore to be fully loaded
+        const listener = Hub.listen("datastore", async hubData => {
+            const  { event, data } = hubData.payload
+            console.log(event)
+            if (event === "ready") {
+                console.log("datastore ready in blogpage")
+                getData()
+            }
+        })
+
         getData()
+
+        return () => {
+            listener()
+        }
     }, [])
 
+    // tag buttons to filter posts
     const filterPosts = (tag) => {
         if (tag === "thoughts") {
             setPosts(thoughts)
@@ -49,7 +70,7 @@ function BlogPage () {
 
     const convertDate = isoDate => {
         const date = new Date(isoDate)
-        let dateString = date.getDate() + " " + date.toLocaleString('default', { month: 'long' }) + " " + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
+        let dateString = date.getDate() + " " + date.toLocaleString('default', { month: 'long' }) + " " + date.getFullYear() + " " + date.toString().substring(16, 25)
         return dateString
     }
 
@@ -70,9 +91,10 @@ function BlogPage () {
                 )}
             </div>
 
-            <div id="post-content">
-                {currentPost.content}
-            </div>
+                <div id="post-content">
+                    {currentPost.content}
+                </div>
+            </div>   
         </div>
     )
 }

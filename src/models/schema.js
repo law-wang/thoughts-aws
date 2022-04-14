@@ -139,6 +139,21 @@ export const schema = {
                     "attributes": [],
                     "isReadOnly": true
                 },
+                "time": {
+                    "name": "time",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
                 "updatedAt": {
                     "name": "updatedAt",
                     "isArray": false,
