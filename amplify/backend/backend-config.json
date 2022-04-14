@@ -24,7 +24,16 @@
             }
           ]
         }
-      }
+      },
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "thoughts",
+          "attributes": [
+            "UserPoolId"
+          ]
+        }
+      ]
     }
   },
   "auth": {
@@ -53,6 +62,13 @@
           "EMAIL"
         ]
       }
+    }
+  },
+  "storage": {
+    "s3thoughtsstorage6921f7e6": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
     }
   }
 }

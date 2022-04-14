@@ -110,8 +110,15 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "createdAt": {
-                    "name": "createdAt",
+                "blogID": {
+                    "name": "blogID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "time": {
+                    "name": "time",
                     "isArray": false,
                     "type": "AWSDateTime",
                     "isRequired": true,
@@ -121,15 +128,16 @@ export const schema = {
                     "name": "num",
                     "isArray": false,
                     "type": "Int",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
-                "blogID": {
-                    "name": "blogID",
+                "createdAt": {
+                    "name": "createdAt",
                     "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
                 },
                 "updatedAt": {
                     "name": "updatedAt",
@@ -195,5 +203,5 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "version": "40d1f0aaa99185fc1faf26575f352d66"
+    "version": "7374952d6bbba3826a7274a980da9d5c"
 };

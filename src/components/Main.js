@@ -1,5 +1,6 @@
 import { Auth } from 'aws-amplify'
 import { DataStore } from '@aws-amplify/datastore'
+import { Hub } from "@aws-amplify/core"
 import { useEffect, useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 
@@ -32,8 +33,24 @@ function Main() {
       } catch (err) {
         console.error(err)
       }
-    }
+    }    
+    const listener = Hub.listen("datastore", async hubData => {
+      console.log("start")
+      const  { event, data } = hubData.payload;
+      console.log(event)
+      console.log(data)
+      if (event === "ready") {
+        console.log("ready")
+        // do something here once the data is synced from the cloud
+      }
+    })
     getData()
+
+
+    return () => {
+
+      listener()
+    }
   }, [])
 
   return (

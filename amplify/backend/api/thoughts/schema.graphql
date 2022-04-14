@@ -14,8 +14,8 @@ type Post @model @auth(rules: [{allow: public, operations: [read]}, {allow: owne
   id: ID!
   content: String!
   tag: Tag!
-  createdAt: AWSDateTime!
-  num: Int!
   blogID: ID! @index(name: "byBlog")
+  time: AWSDateTime!
+  num: Int
 }
  
