@@ -1,10 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import reportWebVitals from './reportWebVitals';
-
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router } from "react-router-dom"
+import ReactDOM from 'react-dom/client'
+import reportWebVitals from './reportWebVitals'
 
 import Amplify from "@aws-amplify/core"
 import { AuthModeStrategyType } from 'aws-amplify'
