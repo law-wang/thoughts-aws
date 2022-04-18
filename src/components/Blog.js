@@ -2,6 +2,9 @@ import { DataStore } from '@aws-amplify/datastore'
 import { Hub } from "@aws-amplify/core"
 import { useEffect, useState } from 'react'
 
+import { marked } from 'marked'
+import { sanitize } from 'dompurify'
+
 import { Tag, Post } from '../models'
 import '../style.css'
 
@@ -13,6 +16,7 @@ function Blog () {
     const [playlists, setPlaylists] = useState([])
     const [quotes, setQuotes] = useState([])
     const [currentPost, setCurrentPost] = useState({content:""})
+    const [currentHTML, setCurrentHTML] = useState("")
 
     useEffect(() => {
         const start = async () => {
@@ -65,6 +69,12 @@ function Blog () {
         }
     }, [])
 
+    useEffect(() => {
+        const html = marked.parse(currentPost.content)
+        const sanitized = sanitize(html)
+        setCurrentHTML(sanitized)
+    }, [currentPost])
+
     // tag buttons to filter posts
     const filterPosts = (tag) => {
         if (tag === "thoughts") {
@@ -102,9 +112,7 @@ function Blog () {
                 )}
             </div>
 
-            <div id="post-content">
-                {currentPost.content}
-            </div>
+            <div id="post-content" dangerouslySetInnerHTML={{__html: currentHTML}} />
         </div>
     )
 }
