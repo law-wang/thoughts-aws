@@ -71,7 +71,7 @@ function Blog () {
 
     useEffect(() => {
         const html = marked.parse(currentPost.content)
-        const sanitized = sanitize(html)
+        const sanitized = html ? sanitize(html) : "<p>wow, nice to see you here!</p>"
         setCurrentHTML(sanitized)
     }, [currentPost])
 
@@ -97,7 +97,7 @@ function Blog () {
 
     return (
         <div id='overall'>
-            <nav>
+            <nav id="post-nav">
                 <button onClick={e => filterPosts("all")}>All</button>
                 <button onClick={e => filterPosts("thoughts")}>Thoughts</button>
                 <button onClick={e => filterPosts("playlists")}>Playlists</button>
