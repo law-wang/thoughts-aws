@@ -2,6 +2,7 @@ import { DataStore } from '@aws-amplify/datastore'
 import { Hub } from "@aws-amplify/core"
 import { useEffect, useState } from 'react'
 
+import { Slider } from "@material-ui/core"
 import { marked } from 'marked'
 import { sanitize } from 'dompurify'
 
@@ -18,6 +19,7 @@ function Blog () {
     const [currentPost, setCurrentPost] = useState({content:""})
     const [currentHTML, setCurrentHTML] = useState("")
 
+    // hook for grabbing data, only run once
     useEffect(() => {
         const start = async () => {
             await DataStore.start()
@@ -72,6 +74,7 @@ function Blog () {
         }
     }, [])
 
+    // hook for changing post content that is displayed
     useEffect(() => {
         const html = marked.parse(currentPost.content)
         const sanitized = html ? sanitize(html) : "<p>wow, nice to see you here!</p>"
@@ -97,8 +100,12 @@ function Blog () {
         const createdAt = new Date(post.createdAt)
         let words = ("0"+date.getDate()).slice(-2) + " " + date.toLocaleString('default', { month: 'long' }) + " " + date.getFullYear() + " " + date.toLocaleString('en-GB', { timeZone: 'UTC' }).substring(12, 18) + createdAt.toLocaleString('en-GB', { timeZone: 'UTC' }).substring(18, 20)
         let numeric = date.toLocaleString('en-GB', { timeZone: 'UTC' }).substring(0, 18) + createdAt.toLocaleString('en-GB', { timeZone: 'UTC' }).substring(18, 20)
-        return type == "numeric" ? numeric : words
+        return type === "numeric" ? numeric : words
     }
+
+    const [fontSize, setFontSize] = useState([100])
+    const [letterSpacing, setLetterSpacing] = useState([0.00])
+    const [lineHeight, setLineHeight] = useState([1.0])
 
     return (
         <div id='overall'>
@@ -119,10 +126,28 @@ function Blog () {
 
             <div id="post-content">
                 <div id="post-area">
-                    <div id="post-markdown" dangerouslySetInnerHTML={{__html: currentHTML}} />
-                    <div>{currentPost.time ? convertDate(currentPost, "words") : ""}</div>
+                    <div id="post-markdown" style={{fontSize: `${fontSize}px`, letterSpacing: `${letterSpacing}em`, lineHeight: `${lineHeight}`}} dangerouslySetInnerHTML={{__html: currentHTML}} />
+                    <div id="post-time">{currentPost.time ? convertDate(currentPost, "words") : ""}</div>
                 </div>
-                <div id="post-resize"></div>
+
+                <div id="post-resize">
+                    <div>
+                        <div className="icon">font size</div>
+                        <div className="slider"><Slider value={fontSize} defaultValue={100} min={30} max={200} step={1} onChange={(e, data) => setFontSize(data)} /></div>
+                        <div className="label">{fontSize}px</div>
+                    </div>
+                    <div>
+                        <div className="icon">letter spacing</div>
+                        <div className="slider"><Slider value={letterSpacing} defaultValue={0} min={-0.1} max={0.1} step={0.01} onChange={(e, data) => setLetterSpacing(data)} /></div>
+                        <div className="label">{Number(letterSpacing).toFixed(2)}</div>
+                    </div>
+                    <div>
+                        <div className="icon">line height</div>
+                        <div className="slider"><Slider value={lineHeight} defaultValue={1} min={0.5} max={3} step={0.1} onChange={(e, data) => setLineHeight(data)} /></div>
+                        <div className="label">{Number(lineHeight).toFixed(2)}</div>
+                    </div>
+                    
+                </div>
             </div>
         </div>
     )
