@@ -143,7 +143,7 @@ function Blog () {
                     </div>
                     <div>
                         <div className="icon">line height</div>
-                        <div className="slider"><Slider value={lineHeight} defaultValue={1} min={0.5} max={3} step={0.1} onChange={(e, data) => setLineHeight(data)} /></div>
+                        <div className="slider"><Slider value={lineHeight} defaultValue={1} min={0.5} max={3} step={0.01} onChange={(e, data) => setLineHeight(data)} /></div>
                         <div className="label">{Number(lineHeight).toFixed(2)}</div>
                     </div>
                     
