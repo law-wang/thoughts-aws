@@ -5,11 +5,11 @@ import '../style.css'
 
 function Auth() {
   return (
-    <div>
+    <div className="login">
       <Authenticator hideSignUp>
         {({ signOut, user }) => (
           <main>
-            <h1>Hello {user.username}</h1>
+            <h1>Welcome, user {user.username}!</h1>
             <button onClick={signOut}>Sign out</button>
           </main>
         )}

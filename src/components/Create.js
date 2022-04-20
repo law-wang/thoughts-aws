@@ -27,11 +27,23 @@ function Create ({ user }) {
         user ? 
         <div id="post-create">
             <form onSubmit={handleSubmit(onSubmit)}>
-                <input type="text" placeholder="Content" {...register("Content", {required: true})} />
+                <textarea type="text" rows="5" placeholder="Content" {...register("Content", {required: true})} />
 
-                <input {...register("Tag", { required: true })} type="radio" value={Tag.THOUGHTS} /> Thoughts
-                <input {...register("Tag", { required: true })} type="radio" value={Tag.PLAYLISTS} /> Playlists
-                <input {...register("Tag", { required: true })} type="radio" value={Tag.QUOTES} /> Quotes
+                <div>
+                    <input id='thoughts' {...register("Tag", { required: true })} type="radio" value={Tag.THOUGHTS} /> 
+                    <label for="thoughts">Thoughts</label>
+                </div>
+
+                <div>
+                    <input id='playlists' {...register("Tag", { required: true })} type="radio" value={Tag.PLAYLISTS} /> 
+                    <label for="playlists">Playlists</label>
+                </div>
+
+                <div>
+                    <input id='quotes' {...register("Tag", { required: true })} type="radio" value={Tag.QUOTES} /> 
+                    <label for="quotes">Quotes</label>
+                </div>
+
                 <input type="submit" />
             </form>
         </div>
