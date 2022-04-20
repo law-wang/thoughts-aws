@@ -27,26 +27,30 @@ function Blog () {
             try {
                 // query all posts and filter by tags
                 const posts = await DataStore.query(Post)
-                const thoughts = posts.filter(p => {
+                const sortedPosts = posts.slice().sort((a, b) => b.time.localeCompare(a.time))
+
+                const thoughts = sortedPosts.filter(p => {
                     return p.tag === Tag.THOUGHTS
                 })
-                const playlists = posts.filter(p => {
+                const playlists = sortedPosts.filter(p => {
                     return p.tag === Tag.PLAYLISTS
                 })
-                const quotes = posts.filter(p => {
+                const quotes = sortedPosts.filter(p => {
                     return p.tag === Tag.QUOTES
                 })
 
-                setPosts(posts)
-                setAllPosts(posts)
+                setPosts(sortedPosts)
+                setAllPosts(sortedPosts)
                 setThoughts(thoughts)
                 setPlaylists(playlists)
                 setQuotes(quotes)
+                // setCurrentPost(sortedPosts[0])
+                console.log(sortedPosts)
 
                 // ensure logging is correct
-                console.log(thoughts)
-                console.log(playlists)
-                console.log(quotes)
+                // console.log(thoughts)
+                // console.log(playlists)
+                // console.log(quotes)
             } catch (err) {
                 console.error(err)
             }
@@ -55,9 +59,8 @@ function Blog () {
         // listen for datastore to be fully loaded, then make datastore queries
         const listener = Hub.listen("datastore", async hubData => {
             const  { event, data } = hubData.payload
-            console.log(event)
-            console.log(data)
-
+            // console.log(event)
+            // console.log(data)
             if (event === "ready") {
                 getData()
             }
@@ -86,13 +89,15 @@ function Blog () {
         } else if (tag === "all") {
             setPosts(allposts)
         }
-        setCurrentPost({content:""})
+        // setCurrentPost({content:""})
     }
 
-    const convertDate = isoDate => {
-        const date = new Date(isoDate)
-        let dateString = date.getDate() + " " + date.toLocaleString('default', { month: 'long' }) + " " + date.getFullYear() + " " + date.toString().substring(16, 25)
-        return dateString
+    const convertDate = (post, type) => {
+        const date = new Date(post.time)
+        const createdAt = new Date(post.createdAt)
+        let words = ("0"+date.getDate()).slice(-2) + " " + date.toLocaleString('default', { month: 'long' }) + " " + date.getFullYear() + " " + date.toLocaleString('en-GB', { timeZone: 'UTC' }).substring(12, 18) + createdAt.toLocaleString('en-GB', { timeZone: 'UTC' }).substring(18, 20)
+        let numeric = date.toLocaleString('en-GB', { timeZone: 'UTC' }).substring(0, 18) + createdAt.toLocaleString('en-GB', { timeZone: 'UTC' }).substring(18, 20)
+        return type == "numeric" ? numeric : words
     }
 
     return (
@@ -107,12 +112,18 @@ function Blog () {
             <div id="post-list">
                 {posts.map(post => (
                     <h2 key={post.id}>
-                        <button onClick={e => setCurrentPost(post)}>{post.time ? convertDate(post.time) : "a note"}</button>
+                        <button onClick={e => setCurrentPost(post)}>{post.time ? convertDate(post, "numeric") : "a note"}</button>
                     </h2>)
                 )}
             </div>
 
-            <div id="post-content" dangerouslySetInnerHTML={{__html: currentHTML}} />
+            <div id="post-content">
+                <div id="post-area">
+                    <div id="post-markdown" dangerouslySetInnerHTML={{__html: currentHTML}} />
+                    <div>{currentPost.time ? convertDate(currentPost, "words") : ""}</div>
+                </div>
+                <div id="post-resize"></div>
+            </div>
         </div>
     )
 }
