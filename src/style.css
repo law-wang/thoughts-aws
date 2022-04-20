@@ -80,6 +80,10 @@ button {
   display: none;
 }
 
+[contenteditable]:focus {
+  outline: 0px solid transparent;
+}
+
 #overall {
   display: grid;
   width: 100%;

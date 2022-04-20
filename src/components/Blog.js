@@ -104,8 +104,8 @@ function Blog () {
     }
 
     const [fontSize, setFontSize] = useState([100])
-    const [letterSpacing, setLetterSpacing] = useState([0.00])
-    const [lineHeight, setLineHeight] = useState([1.0])
+    const [letterSpacing, setLetterSpacing] = useState([-0.05])
+    const [lineHeight, setLineHeight] = useState([0.9])
 
     return (
         <div id='overall'>
@@ -119,15 +119,27 @@ function Blog () {
             <div id="post-list">
                 {posts.map(post => (
                     <h2 key={post.id}>
-                        <button onClick={e => setCurrentPost(post)}>{post.time ? convertDate(post, "numeric") : "a note"}</button>
+                        <button onClick={e => setCurrentPost(post)}>
+                            {post.time ? convertDate(post, "numeric") : "a note"}
+                        </button>
                     </h2>)
                 )}
             </div>
 
             <div id="post-content">
                 <div id="post-area">
-                    <div id="post-markdown" style={{fontSize: `${fontSize}px`, letterSpacing: `${letterSpacing}em`, lineHeight: `${lineHeight}`}} dangerouslySetInnerHTML={{__html: currentHTML}} />
-                    <div id="post-time">{currentPost.time ? convertDate(currentPost, "words") : ""}</div>
+                    <div id="post-markdown" 
+                        contentEditable={true} 
+                        spellCheck={false}
+                        style={{
+                            fontSize: `${fontSize}px`, 
+                            letterSpacing: `${letterSpacing}em`, 
+                            lineHeight: `${lineHeight}`}} 
+                        dangerouslySetInnerHTML={{__html: currentHTML}} 
+                    />
+                    <div id="post-time">
+                        {currentPost.time ? convertDate(currentPost, "words") : ""}
+                    </div>
                 </div>
 
                 <div id="post-resize">
