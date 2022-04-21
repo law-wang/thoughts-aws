@@ -18,6 +18,7 @@ function Blog () {
     const [quotes, setQuotes] = useState([])
     const [currentPost, setCurrentPost] = useState({content:""})
     const [currentHTML, setCurrentHTML] = useState("")
+    const [currentTime, setCurrentTime] = useState("")
 
     // hook for grabbing data, only run once
     useEffect(() => {
@@ -77,8 +78,9 @@ function Blog () {
     // hook for changing post content that is displayed
     useEffect(() => {
         const html = marked.parse(currentPost.content)
-        const sanitized = html ? sanitize(html) : "<p>wow, nice to see you here!</p>"
+        const sanitized = html ? sanitize(html) : "<p>wow, nice to see you here! you can change this text, btw</p>"
         setCurrentHTML(sanitized)
+        setCurrentTime(currentPost.time ? convertDate(currentPost, "words") : "")
     }, [currentPost])
 
     // tag buttons to filter posts
@@ -138,7 +140,7 @@ function Blog () {
                         dangerouslySetInnerHTML={{__html: currentHTML}} 
                     />
                     <div id="post-time">
-                        {currentPost.time ? convertDate(currentPost, "words") : ""}
+                        {currentTime}
                     </div>
                 </div>
 

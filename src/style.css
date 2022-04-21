@@ -54,6 +54,9 @@ table {
   font-family: "Times New Roman", "SimSun", "STSong", serif !important;
   color: var(--blue) !important;
   font-size: 20px;
+  -moz-animation: fadein 0.5s; 
+  -webkit-animation: fadein 0.5s; 
+  animation: fadein 0.5s;
 }
 
 body {
@@ -84,6 +87,7 @@ button {
   outline: 0px solid transparent;
 }
 
+/* Grid */
 #overall {
   display: grid;
   width: 100%;
@@ -96,12 +100,14 @@ button {
   overflow: hidden;
 }
 
-@media screen and (max-width: 531px) {
+@media screen and (max-width: 450px) {
   .overall {
+    grid-template-columns: auto;
+    grid-template-rows: 35px auto 200px;
     grid-template-areas: 
     "nav"
-    "content"
-    "list";
+    "con"
+    "lst";
   }
 }
 
@@ -149,10 +155,7 @@ button {
   overflow-y: auto;
 }
 
-#post-time {
-  margin: 30px 0;
-}
-
+/* Sliders */
 #post-resize {
   width: 100%;
   height: 35px;
@@ -185,6 +188,23 @@ button {
 .label {
   margin-left: 5px;
   width: auto;
+}
+
+@media screen and (max-width: 700px) {
+  #post-area {
+    height: calc(100% - 100px);
+  }
+
+  #post-resize {
+    height: 90px;
+    flex-direction: column;
+  }
+
+  #post-resize > div {
+    max-width: unset;
+    width: 90%;
+    margin: 0 auto;
+  }
 }
 
 /* Login & Create */
@@ -224,37 +244,39 @@ button {
   outline: 0px solid transparent;
 }
 
-
 /* Markdown CSS */
-h1 {
-  /* font-weight: 700;
-  font-size: 80px !important;
-  padding: 0 0 10px 0; */
-}
-h3,
-h4 {
-  /* padding: 0; */
-}
-h4 {
-  /* font-style: italic;
-  text-align: right;
-  margin-top: 15px; */
-}
-h6 {
-  /* font-weight: 700;
-	font-size: 45px !important;
-	margin-bottom: 20px; */
-}
-a {
-  /* text-decoration: none; */
-}
-p {
-  width: 100%;
-  /* font-size: 100px; */
-  /* font-size: 35px !important;
-  line-height: normal; */
-}
-li {
-  /* padding: 10px 0 10px 0; */
+#post-markdown {
+  max-width: 1000px;
 }
 
+#post-markdown :is(h1, h2, h3, h4, h5, h6, p) {
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+}
+
+b, strong {
+  font-weight: 700;
+}
+
+i {
+  font-style: italic;
+}
+
+/* Functional */
+@-moz-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@-webkit-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

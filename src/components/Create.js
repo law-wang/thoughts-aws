@@ -48,7 +48,7 @@ function Create ({ user }) {
             </form>
         </div>
         : 
-        <div>Access Denied.</div>
+        <div id="post-create">Access Denied.</div>
     )
 }
 
