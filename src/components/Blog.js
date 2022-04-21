@@ -126,6 +126,7 @@ function Blog () {
                         </button>
                     </h2>)
                 )}
+                <div className="post-list-mobile-close">close</div>
             </div>
 
             <div id="post-content">
@@ -139,7 +140,7 @@ function Blog () {
                             lineHeight: `${lineHeight}`}} 
                         dangerouslySetInnerHTML={{__html: currentHTML}} 
                     />
-                    <div id="post-time">
+                    <div id="post-time" style={{marginBottom: "30px"}}>
                         {currentTime}
                     </div>
                 </div>

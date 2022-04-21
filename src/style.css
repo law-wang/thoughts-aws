@@ -92,6 +92,8 @@ button {
   display: grid;
   width: 100%;
   height: 100vh;
+  background-color: var(--blue);
+  gap: 1px;
   grid-template-columns: 200px auto;
   grid-template-rows: 35px auto;
   grid-template-areas: 
@@ -101,21 +103,24 @@ button {
 }
 
 @media screen and (max-width: 450px) {
-  .overall {
+  #overall {
     grid-template-columns: auto;
-    grid-template-rows: 35px auto 200px;
+    grid-template-rows: 35px auto;
     grid-template-areas: 
     "nav"
-    "con"
-    "lst";
+    "con";
   }
+}
+
+#post-nav, #post-list, #post-content {
+  background-color: var(--white);
 }
 
 #post-nav {
   grid-area: nav;
   width: 100%;
   padding: 0 5px;
-  border-bottom: 1px solid var(--blue) ;
+  /* border-bottom: 1px solid var(--blue) ; */
 }
 
 #post-nav > button {
@@ -124,7 +129,6 @@ button {
 
 #post-list {
   grid-area: lst;
-  width: calc(100% - 10px);
   height: 100%;
   overflow-y: auto;
   padding-left: 5px;
@@ -138,16 +142,23 @@ button {
   margin-bottom: 5px;
 }
 
+.post-list-mobile-close {
+  display: none;
+  position: fixed;
+  bottom: 5px;
+  right: 10px;
+  font-size: 20px;
+}
+
 #post-content {
   grid-area: con;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  border-left: 1px solid var(--blue) ;
+  /* border-left: 1px solid var(--blue) ; */
 }
 
 #post-area {
-  width: calc(100% - 30px);
   height: calc(100% - 45px);
   margin: 0 20px 0 20px;
   padding-top: 10px;
@@ -155,11 +166,37 @@ button {
   overflow-y: auto;
 }
 
+@media screen and (max-width: 700px) {
+  #post-area {
+    height: calc(100% - 100px);
+  }
+}
+
+@media screen and (max-width: 450px) {
+  #post-list {
+    z-index: 999;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 200px;
+    border-top: 1px solid var(--blue);
+  }
+
+  .post-list-mobile-show {
+    bottom: 0;
+  }
+
+  .post-list-mobile-close {
+    display: block;
+  }
+}
+
 /* Sliders */
 #post-resize {
   width: 100%;
   height: 35px;
-  border-top: 1px solid var(--blue) ;
+  border-top: 1px solid var(--blue);
   display: flex;
   flex-direction: row;
 }
@@ -191,10 +228,6 @@ button {
 }
 
 @media screen and (max-width: 700px) {
-  #post-area {
-    height: calc(100% - 100px);
-  }
-
   #post-resize {
     height: 90px;
     flex-direction: column;
@@ -203,6 +236,7 @@ button {
   #post-resize > div {
     max-width: unset;
     width: 90%;
+    height: 30px;
     margin: 0 auto;
   }
 }
