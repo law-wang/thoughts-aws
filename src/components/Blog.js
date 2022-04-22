@@ -48,7 +48,6 @@ function Blog () {
                 setPlaylists(playlists)
                 setQuotes(quotes)
                 // setCurrentPost(sortedPosts[0])
-                console.log(sortedPosts)
 
                 // ensure logging is correct
                 // console.log(thoughts)
@@ -77,6 +76,7 @@ function Blog () {
 
     const listRef = useRef(null)
     const buttonRef = useRef(null)
+    const overallRef = useRef(null)
     const [fontSize, setFontSize] = useState([100])
     const [letterSpacing, setLetterSpacing] = useState([-0.05])
     const [lineHeight, setLineHeight] = useState([0.9])
@@ -120,8 +120,31 @@ function Blog () {
         return type === "numeric" ? numeric : words
     }
 
+    // make sure mobile height sizing is correct
+    function getWindowDimensions() {
+        const { innerWidth: width, innerHeight: height } = window
+        return { width, height }
+    }
+
+    function useWindowDimensions() {
+        const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions())
+        useEffect(() => {
+            function handleResize() {
+                setWindowDimensions(getWindowDimensions())
+            }
+            window.addEventListener('resize', handleResize)
+            return () => window.removeEventListener('resize', handleResize)
+        }, [])
+        return windowDimensions
+    }
+
+    const { height, width } = useWindowDimensions()
+    useEffect(() => {
+        overallRef.current.style.height = height + "px"
+    }, [height, width])
+
     return (
-        <div id='overall'>
+        <div id='overall' ref={overallRef}>
             <nav id="post-nav">
                 <button onClick={e => filterPosts("all")}>All</button>
                 <button onClick={e => filterPosts("thoughts")}>Thoughts</button>
