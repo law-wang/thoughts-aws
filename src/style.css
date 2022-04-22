@@ -144,10 +144,6 @@ button {
 
 .post-list-mobile-close {
   display: none;
-  position: fixed;
-  bottom: 5px;
-  right: 10px;
-  font-size: 20px;
 }
 
 #post-content {
@@ -174,21 +170,34 @@ button {
 
 @media screen and (max-width: 450px) {
   #post-list {
-    z-index: 999;
+    z-index: 900;
     position: fixed;
     left: 0;
-    bottom: 0;
+    bottom: -100%;
     width: 100%;
     height: 200px;
     border-top: 1px solid var(--blue);
+    transform: scale(1);
+    transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.8s, bottom 0.7s;
   }
 
-  .post-list-mobile-show {
-    bottom: 0;
+  .mobile-show {
+    bottom: 0 !important;
+  }
+
+  .close-button-show {
+    top: calc(100% - 200px) !important;
   }
 
   .post-list-mobile-close {
+    z-index: 999;
     display: block;
+    position: fixed;
+    top: 200%;
+    right: 10px;
+    font-size: 20px;
+    transform: scale(1);
+    transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.8s, bottom 0.7s, top 0.7s;
   }
 }
 

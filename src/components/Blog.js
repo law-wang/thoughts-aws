@@ -1,6 +1,6 @@
 import { DataStore } from '@aws-amplify/datastore'
 import { Hub } from "@aws-amplify/core"
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 import { Slider } from "@material-ui/core"
 import { marked } from 'marked'
@@ -75,6 +75,12 @@ function Blog () {
         }
     }, [])
 
+    const listRef = useRef(null)
+    const buttonRef = useRef(null)
+    const [fontSize, setFontSize] = useState([100])
+    const [letterSpacing, setLetterSpacing] = useState([-0.05])
+    const [lineHeight, setLineHeight] = useState([0.9])
+
     // hook for changing post content that is displayed
     useEffect(() => {
         const html = marked.parse(currentPost.content)
@@ -83,8 +89,17 @@ function Blog () {
         setCurrentTime(currentPost.time ? convertDate(currentPost, "words") : "")
     }, [currentPost])
 
+    const showList = () => {
+        listRef.current.classList.toggle("mobile-show")
+        buttonRef.current.classList.toggle("close-button-show")
+    }
+
     // tag buttons to filter posts
     const filterPosts = (tag) => {
+        if (!listRef.current.classList.contains("post-list-mobile-show")) {
+            listRef.current.classList.add("mobile-show")
+            buttonRef.current.classList.add("close-button-show")
+        }
         if (tag === "thoughts") {
             setPosts(thoughts)
         } else if (tag === "playlists") {
@@ -105,10 +120,6 @@ function Blog () {
         return type === "numeric" ? numeric : words
     }
 
-    const [fontSize, setFontSize] = useState([100])
-    const [letterSpacing, setLetterSpacing] = useState([-0.05])
-    const [lineHeight, setLineHeight] = useState([0.9])
-
     return (
         <div id='overall'>
             <nav id="post-nav">
@@ -118,7 +129,7 @@ function Blog () {
                 <button onClick={e => filterPosts("quotes")}>Quotes</button>
             </nav>
 
-            <div id="post-list">
+            <div id="post-list" ref={listRef}> 
                 {posts.map(post => (
                     <h2 key={post.id}>
                         <button onClick={e => setCurrentPost(post)}>
@@ -126,8 +137,8 @@ function Blog () {
                         </button>
                     </h2>)
                 )}
-                <div className="post-list-mobile-close">close</div>
             </div>
+            <button className="post-list-mobile-close" ref={buttonRef} onClick={e => showList()}>close</button>
 
             <div id="post-content">
                 <div id="post-area">
