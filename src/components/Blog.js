@@ -115,8 +115,8 @@ function Blog () {
     const convertDate = (post, type) => {
         const date = new Date(post.time)
         const createdAt = new Date(post.createdAt)
-        let words = ("0"+date.getDate()).slice(-2) + " " + date.toLocaleString('default', { month: 'long' }) + " " + date.getFullYear() + " " + date.toLocaleString('en-GB', { timeZone: 'UTC' }).substring(12, 18) + createdAt.toLocaleString('en-GB', { timeZone: 'UTC' }).substring(18, 20)
-        let numeric = date.toLocaleString('en-GB', { timeZone: 'UTC' }).substring(0, 18) + createdAt.toLocaleString('en-GB', { timeZone: 'UTC' }).substring(18, 20)
+        let words = ("0"+date.getDate()).slice(-2) + " " + date.toLocaleString('default', { month: 'long' }) + " " + date.getFullYear() + " " + date.toLocaleString('en-GB', { timeZone: 'America/New_York' }).substring(12, 18) + createdAt.toLocaleString('en-GB', { timeZone: 'America/New_York' }).substring(18, 20) + " UTC"
+        let numeric = date.toLocaleString('en-GB', { timeZone: 'America/New_York' }).substring(0, 18) + createdAt.toLocaleString('en-GB', { timeZone: 'America/New_York' }).substring(18, 20)
         return type === "numeric" ? numeric : words
     }
 
