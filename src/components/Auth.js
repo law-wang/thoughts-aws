@@ -1,7 +1,7 @@
-import React from 'react'
-import { Authenticator } from '@aws-amplify/ui-react'
+import React from 'react';
+import { Authenticator } from '@aws-amplify/ui-react';
 
-import '../style.css'
+import '../style.css';
 
 function Auth() {
   return (
@@ -11,11 +11,14 @@ function Auth() {
           <main>
             <h1>Welcome, user {user.username}!</h1>
             <button onClick={signOut}>Sign out</button>
+            <div>
+              <a href="/create">Create</a>
+            </div>
           </main>
         )}
       </Authenticator>
     </div>
-  )
+  );
 }
 
-export default Auth
+export default Auth;

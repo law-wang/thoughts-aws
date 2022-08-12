@@ -75,7 +75,9 @@ function Create({ user }) {
       </form>
     </div>
   ) : (
-    <div id="post-create">Access Denied.</div>
+    <div id="post-create">
+      Access Denied. You need to <a href="/login">log in</a> first.
+    </div>
   );
 }
 
