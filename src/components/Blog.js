@@ -2,12 +2,18 @@ import { DataStore } from '@aws-amplify/datastore';
 import { Hub } from '@aws-amplify/core';
 import { useEffect, useState, useRef } from 'react';
 
+// import Amplify, { Storage } from 'aws-amplify';
+// import awsconfig from '../aws-exports';
+import { Storage } from '@aws-amplify/storage';
+
 import { Slider } from '@material-ui/core';
 import { marked } from 'marked';
 import { sanitize } from 'dompurify';
 
 import { Tag, Post } from '../models';
 import '../style.css';
+
+// Amplify.configure(awsconfig);
 
 function Blog() {
   const [posts, setPosts] = useState([]);
@@ -24,6 +30,16 @@ function Blog() {
     const start = async () => {
       await DataStore.start();
     };
+
+    Storage.list('') // for listing ALL files without prefix, pass '' instead
+      .then((result) => console.log(result))
+      .catch((err) => console.log(err));
+
+    // Storage.list('')
+    //   .then((result) => {
+    //     result.forEach((item) => console.log(item));
+    //   })
+    //   .catch((err) => console.error(err));
 
     const getData = async () => {
       try {
@@ -175,6 +191,7 @@ function Blog() {
         <button onClick={(e) => filterPosts('thoughts')}>Thoughts</button>
         <button onClick={(e) => filterPosts('playlists')}>Playlists</button>
         <button onClick={(e) => filterPosts('quotes')}>Quotes</button>
+        <button onClick={(e) => filterPosts('quotes')}>Audio</button>
       </nav>
 
       <div id="post-list" ref={listRef}>

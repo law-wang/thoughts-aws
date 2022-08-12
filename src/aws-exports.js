@@ -27,7 +27,10 @@ const awsmobile = {
     },
     "aws_cognito_verification_mechanisms": [
         "EMAIL"
-    ]
+    ],
+    "aws_user_files_s3_bucket": "ferrari-storage153848-staging",
+    "aws_user_files_s3_bucket_region": "us-east-2",
+    "region": "us-east-2"
 };
 
 

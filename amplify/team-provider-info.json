@@ -10,11 +10,6 @@
       "StackName": "amplify-ferrari-staging-153848",
       "StackId": "arn:aws:cloudformation:us-east-2:124666009379:stack/amplify-ferrari-staging-153848/fabf8b20-bc08-11ec-a1d7-0a6638343364",
       "AmplifyAppId": "dihwey7qwide8"
-    },
-    "categories": {
-      "auth": {
-        "ferrari": {}
-      }
     }
   }
 }
