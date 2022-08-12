@@ -2,6 +2,7 @@ import { DataStore } from '@aws-amplify/datastore';
 import { Hub } from '@aws-amplify/core';
 import { useEffect, useState, useRef } from 'react';
 import { Storage } from '@aws-amplify/storage';
+import { Amplify } from 'aws-amplify';
 
 import { Slider } from '@material-ui/core';
 import { marked } from 'marked';
@@ -9,6 +10,9 @@ import { sanitize } from 'dompurify';
 
 import { Tag, Post } from '../models';
 import '../style.css';
+
+import awsconfig from '../aws-exports';
+Amplify.configure(awsconfig);
 
 function Blog() {
   const [posts, setPosts] = useState([]);
@@ -20,15 +24,15 @@ function Blog() {
   const [currentHTML, setCurrentHTML] = useState('');
   const [currentTime, setCurrentTime] = useState('');
 
+  Storage.list('') // for listing ALL files without prefix, pass '' instead
+    .then((result) => console.log(result))
+    .catch((err) => console.log(err));
+
   // hook for grabbing data, only run once
   useEffect(() => {
     const start = async () => {
       await DataStore.start();
     };
-
-    Storage.list('') // for listing ALL files without prefix, pass '' instead
-      .then((result) => console.log(result))
-      .catch((err) => console.log(err));
 
     const getData = async () => {
       try {
