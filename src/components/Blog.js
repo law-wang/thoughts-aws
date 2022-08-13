@@ -24,10 +24,6 @@ function Blog() {
   const [currentHTML, setCurrentHTML] = useState('');
   const [currentTime, setCurrentTime] = useState('');
 
-  Storage.list('') // for listing ALL files without prefix, pass '' instead
-    .then((result) => console.log(result))
-    .catch((err) => console.log(err));
-
   // hook for grabbing data, only run once
   useEffect(() => {
     const start = async () => {
@@ -38,6 +34,11 @@ function Blog() {
       try {
         // query all posts and filter by tags
         const posts = await DataStore.query(Post);
+
+        Storage.list('') // list all files in the bucket
+          .then((result) => console.log(result))
+          .catch((err) => console.log(err));
+
         const sortedPosts = posts
           .slice()
           .sort((a, b) => b.time.localeCompare(a.time));
@@ -96,7 +97,7 @@ function Blog() {
     const html = marked.parse(currentPost.content);
     const sanitized = html
       ? sanitize(html)
-      : "<p>Welcome to Lawrence's thoughts, where he collects his random daily thoughts and playlists and audio clips and quotes. It is built with Create React App and AWS, and the design is inspired by a type foundry website, so you can edit the text and change its appearance :)</p>";
+      : "<p>Welcome to Lawrence's thoughts, where he collects his random daily ideas and playlists and audio clips and quotes. It is built with Create React App and AWS, and the design is inspired by type foundry websites, so you can edit the text and change its appearance :)</p>";
     setCurrentHTML(sanitized);
     setCurrentTime(currentPost.time ? convertDate(currentPost, 'words') : '');
   }, [currentPost]);

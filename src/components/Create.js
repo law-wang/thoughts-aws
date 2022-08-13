@@ -29,7 +29,9 @@ function Create({ user }) {
   };
   console.log(errors);
 
-  // await Storage.put("test.txt", "Hello");
+  //   const add = async () => {
+  //     await Storage.put('test.txt', 'Hello');
+  //   };
 
   return user ? (
     <div id="post-create">
@@ -73,6 +75,8 @@ function Create({ user }) {
 
         <input type="submit" />
       </form>
+
+      {/* <button onClick={add}>Add</button> */}
     </div>
   ) : (
     <div id="post-create">
