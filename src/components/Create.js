@@ -29,9 +29,20 @@ function Create({ user }) {
   };
   console.log(errors);
 
-  //   const add = async () => {
-  //     await Storage.put('test.txt', 'Hello');
-  //   };
+  const submitAudio = async (e) => {
+    // don't refresh the page on submit
+    e.preventDefault();
+    // get the file from the file upload element, this will be an array.
+    // we only want the first element
+    const file = document.getElementById('file-upload').files[0];
+
+    // put our file in storage, use the file's name as its S3 Key
+    Storage.put(file.name, file)
+      .then((item) => {
+        console.log(item);
+      })
+      .catch((err) => console.error(err));
+  };
 
   return user ? (
     <div id="post-create">
@@ -76,7 +87,10 @@ function Create({ user }) {
         <input type="submit" />
       </form>
 
-      {/* <button onClick={add}>Add</button> */}
+      <form id="upload-form">
+        {/* <input type="file" name="filename" id="file-upload" accept=".mp3, .m4a">
+        <input type="submit" value="Upload" onSubmit> */}
+      </form>
     </div>
   ) : (
     <div id="post-create">

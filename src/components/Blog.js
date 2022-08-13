@@ -15,11 +15,17 @@ import awsconfig from '../aws-exports';
 Amplify.configure(awsconfig);
 
 function Blog() {
-  const [posts, setPosts] = useState([]);
+  const [displayedPosts, setDisplayedPosts] = useState([]);
   const [allposts, setAllPosts] = useState([]);
   const [thoughts, setThoughts] = useState([]);
   const [playlists, setPlaylists] = useState([]);
   const [quotes, setQuotes] = useState([]);
+
+  const [onAudio, setOnAudio] = useState(false);
+  const [audioList, setAudioList] = useState([]);
+  const [audioKeys, setAudioKeys] = useState([]);
+  const [currentAudio, setCurrentAudio] = useState(null);
+
   const [currentPost, setCurrentPost] = useState({ content: '' });
   const [currentHTML, setCurrentHTML] = useState('');
   const [currentTime, setCurrentTime] = useState('');
@@ -34,14 +40,10 @@ function Blog() {
       try {
         // query all posts and filter by tags
         const posts = await DataStore.query(Post);
-
-        Storage.list('') // list all files in the bucket
-          .then((result) => console.log(result))
-          .catch((err) => console.log(err));
-
         const sortedPosts = posts
           .slice()
           .sort((a, b) => b.time.localeCompare(a.time));
+        setDisplayedPosts(sortedPosts);
 
         const thoughts = sortedPosts.filter((p) => {
           return p.tag === Tag.THOUGHTS;
@@ -53,20 +55,23 @@ function Blog() {
           return p.tag === Tag.QUOTES;
         });
 
-        setPosts(sortedPosts);
         setAllPosts(sortedPosts);
         setThoughts(thoughts);
         setPlaylists(playlists);
         setQuotes(quotes);
-        // setCurrentPost(sortedPosts[0])
 
-        // ensure logging is correct
-        // console.log(thoughts)
-        // console.log(playlists)
-        // console.log(quotes)
+        // get bucket content and save to state
+        Storage.list('').then((result) => {
+          setAudioList(result);
+          console.log(result);
+          setAudioKeys(result.map((item) => item.key)); // save result's keys to state
+        });
       } catch (err) {
         console.error(err);
       }
+
+      console.log(audioList);
+      console.log(audioKeys);
     };
 
     // listen for datastore to be fully loaded, then make datastore queries
@@ -97,7 +102,7 @@ function Blog() {
     const html = marked.parse(currentPost.content);
     const sanitized = html
       ? sanitize(html)
-      : "<p>Welcome to Lawrence's thoughts, where he collects his random daily ideas and playlists and audio clips and quotes. It is built with Create React App and AWS, and the design is inspired by type foundry websites, so you can edit the text and change its appearance :)</p>";
+      : "<p>Welcome to Lawrence's thoughts, where he collects his random daily ideas and playlists and audio clips and quotes. It's built with Create React App and AWS, and the design is inspired by type foundry websites, so you can edit the text and change its appearance :)</p>";
     setCurrentHTML(sanitized);
     setCurrentTime(currentPost.time ? convertDate(currentPost, 'words') : '');
   }, [currentPost]);
@@ -109,20 +114,20 @@ function Blog() {
 
   // tag buttons to filter posts
   const filterPosts = (tag) => {
+    setOnAudio(false);
     if (!listRef.current.classList.contains('post-list-mobile-show')) {
       listRef.current.classList.add('mobile-show');
       buttonRef.current.classList.add('close-button-show');
     }
     if (tag === 'thoughts') {
-      setPosts(thoughts);
+      setDisplayedPosts(thoughts);
     } else if (tag === 'playlists') {
-      setPosts(playlists);
+      setDisplayedPosts(playlists);
     } else if (tag === 'quotes') {
-      setPosts(quotes);
+      setDisplayedPosts(quotes);
     } else if (tag === 'all') {
-      setPosts(allposts);
+      setDisplayedPosts(allposts);
     }
-    // setCurrentPost({content:""})
   };
 
   const convertDate = (post, type) => {
@@ -185,18 +190,27 @@ function Blog() {
         <button onClick={(e) => filterPosts('thoughts')}>Thoughts</button>
         <button onClick={(e) => filterPosts('playlists')}>Playlists</button>
         <button onClick={(e) => filterPosts('quotes')}>Quotes</button>
-        <button onClick={(e) => filterPosts('quotes')}>Audio</button>
+        <button onClick={(e) => setOnAudio(true)}>Audio</button>
       </nav>
 
       <div id="post-list" ref={listRef}>
-        {posts.map((post) => (
-          <h2 key={post.id}>
-            <button onClick={(e) => setCurrentPost(post)}>
-              {post.time ? convertDate(post, 'numeric') : 'a note'}
-            </button>
-          </h2>
-        ))}
+        {onAudio
+          ? audioList.map((audio, index) => (
+              <h2 key={index}>
+                <button onClick={(e) => setCurrentAudio(audio.key)}>
+                  {audio.lastModified.toString()}
+                </button>
+              </h2>
+            ))
+          : displayedPosts.map((post) => (
+              <h2 key={post.id}>
+                <button onClick={(e) => setCurrentPost(post)}>
+                  {post.time ? convertDate(post, 'numeric') : 'a note'}
+                </button>
+              </h2>
+            ))}
       </div>
+
       <button
         className="post-list-mobile-close"
         ref={buttonRef}
@@ -207,20 +221,47 @@ function Blog() {
 
       <div id="post-content">
         <div id="post-area">
-          <div
-            id="post-markdown"
-            contentEditable={true}
-            spellCheck={false}
-            style={{
-              fontSize: `${fontSize}px`,
-              letterSpacing: `${letterSpacing}em`,
-              lineHeight: `${lineHeight}`,
-            }}
-            dangerouslySetInnerHTML={{ __html: currentHTML }}
-          />
-          <div id="post-time" style={{ marginBottom: '30px' }}>
-            {currentTime}
-          </div>
+          {onAudio ? (
+            <div
+              id="post-markdown"
+              contentEditable={true}
+              spellCheck={false}
+              style={{
+                fontSize: `${fontSize}px`,
+                letterSpacing: `${letterSpacing}em`,
+                lineHeight: `${lineHeight}`,
+              }}
+            >
+              {currentAudio ? (
+                currentAudio
+              ) : (
+                <p>
+                  Welcome to Lawrence's thoughts, where he collects his random
+                  daily ideas and playlists and audio clips and quotes. It's
+                  built with Create React App and AWS, and the design is
+                  inspired by type foundry websites, so you can edit the text
+                  and change its appearance :&#41;
+                </p>
+              )}
+            </div>
+          ) : (
+            <>
+              <div
+                id="post-markdown"
+                contentEditable={true}
+                spellCheck={false}
+                style={{
+                  fontSize: `${fontSize}px`,
+                  letterSpacing: `${letterSpacing}em`,
+                  lineHeight: `${lineHeight}`,
+                }}
+                dangerouslySetInnerHTML={{ __html: currentHTML }}
+              />
+              <div id="post-time" style={{ marginBottom: '30px' }}>
+                {currentTime}
+              </div>
+            </>
+          )}
         </div>
 
         <div id="post-resize">
@@ -238,6 +279,7 @@ function Blog() {
             </div>
             <div className="label">{fontSize}px</div>
           </div>
+
           <div>
             <div className="icon">letter spacing</div>
             <div className="slider">
@@ -252,6 +294,7 @@ function Blog() {
             </div>
             <div className="label">{Number(letterSpacing).toFixed(2)}</div>
           </div>
+
           <div>
             <div className="icon">line height</div>
             <div className="slider">
