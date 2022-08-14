@@ -1,46 +1,127 @@
 /* CSS RESET */
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-	display: block;
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
 }
 body {
-	line-height: 1;
+  line-height: 1;
 }
-ol, ul {
-	list-style: none;
+ol,
+ul {
+  list-style: none;
 }
-blockquote, q {
-	quotes: none;
+blockquote,
+q {
+  quotes: none;
 }
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
 }
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 /* Custom CSS */
@@ -51,13 +132,13 @@ table {
 }
 
 * {
-  font-family: "Times New Roman", "SimSun", "STSong", serif !important;
+  font-family: 'Times New Roman', 'SimSun', 'STSong', serif !important;
   color: var(--blue) !important;
   font-size: 20px;
-  -moz-animation: fadein 0.5s; 
-  -webkit-animation: fadein 0.5s; 
+  -moz-animation: fadein 0.5s;
+  -webkit-animation: fadein 0.5s;
   animation: fadein 0.5s;
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 body {
@@ -65,11 +146,11 @@ body {
 }
 
 button {
-	background: none;
-	border: none;
-	padding: 5px;
-	cursor: pointer;
-	outline: none;
+  background: none;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  outline: none;
 }
 
 @media (hover: hover) {
@@ -98,9 +179,9 @@ button {
   gap: 1px;
   grid-template-columns: 200px auto;
   grid-template-rows: 35px auto;
-  grid-template-areas: 
-    "nav nav"
-    "lst con";
+  grid-template-areas:
+    'nav nav'
+    'lst con';
   overflow: hidden;
 }
 
@@ -108,13 +189,15 @@ button {
   #overall {
     grid-template-columns: auto;
     grid-template-rows: 35px auto;
-    grid-template-areas: 
-    "nav"
-    "con";
+    grid-template-areas:
+      'nav'
+      'con';
   }
 }
 
-#post-nav, #post-list, #post-content {
+#post-nav,
+#post-list,
+#post-content {
   background-color: var(--white);
 }
 
@@ -178,7 +261,8 @@ button {
     height: 200px;
     border-top: 1px solid var(--blue);
     transform: scale(1);
-    transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.8s, bottom 0.7s;
+    transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.8s,
+      bottom 0.7s;
   }
 
   .mobile-show {
@@ -197,7 +281,8 @@ button {
     right: 10px;
     font-size: 20px;
     transform: scale(1);
-    transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.8s, bottom 0.7s, top 0.7s;
+    transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.8s,
+      bottom 0.7s, top 0.7s;
   }
 }
 
@@ -296,11 +381,17 @@ button {
   margin-bottom: 0.5em;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 700;
 }
 
-b, strong {
+b,
+strong {
   font-weight: 700;
 }
 
@@ -310,16 +401,32 @@ i {
 
 /* Functional */
 @-moz-keyframes fadein {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @-webkit-keyframes fadein {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fadein {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+audio:focus {
+  outline: 0px solid transparent;
 }

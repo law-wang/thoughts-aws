@@ -24,13 +24,14 @@ function Blog() {
   const [onAudio, setOnAudio] = useState(false);
   const [audioList, setAudioList] = useState([]);
   const [audioKeys, setAudioKeys] = useState([]);
-  const [currentAudio, setCurrentAudio] = useState(null);
+  const [currentAudioKey, setCurrentAudioKey] = useState(null);
+  const [currentAudioSrc, setCurrentAudioSrc] = useState(null);
 
   const [currentPost, setCurrentPost] = useState({ content: '' });
   const [currentHTML, setCurrentHTML] = useState('');
   const [currentTime, setCurrentTime] = useState('');
 
-  // hook for grabbing data, only run once
+  // hook for grabbing data, only run once **************************************
   useEffect(() => {
     const start = async () => {
       await DataStore.start();
@@ -90,14 +91,18 @@ function Blog() {
     };
   }, []);
 
-  const listRef = useRef(null);
-  const buttonRef = useRef(null);
-  const overallRef = useRef(null);
-  const [fontSize, setFontSize] = useState([100]);
-  const [letterSpacing, setLetterSpacing] = useState([-0.05]);
-  const [lineHeight, setLineHeight] = useState([0.9]);
+  // handle changing audio content that is displayed **************************************
+  const handleAudio = async (audio) => {
+    setCurrentAudioKey(audio.key);
+    await Storage.get(audio.key)
+      .then((result) => {
+        const sanitizedSrc = result.toString().split('?')[0];
+        setCurrentAudioSrc(sanitizedSrc);
+      })
+      .catch((err) => console.log(err));
+  };
 
-  // hook for changing post content that is displayed
+  // hook for changing post content that is displayed **************************************
   useEffect(() => {
     const html = marked.parse(currentPost.content);
     const sanitized = html
@@ -107,12 +112,21 @@ function Blog() {
     setCurrentTime(currentPost.time ? convertDate(currentPost, 'words') : '');
   }, [currentPost]);
 
+  const listRef = useRef(null);
+  const buttonRef = useRef(null);
+  const overallRef = useRef(null);
+
+  const [fontSize, setFontSize] = useState([100]);
+  const [letterSpacing, setLetterSpacing] = useState([-0.05]);
+  const [lineHeight, setLineHeight] = useState([0.9]);
+
+  // mobile button to show list of posts
   const showList = () => {
     listRef.current.classList.toggle('mobile-show');
     buttonRef.current.classList.toggle('close-button-show');
   };
 
-  // tag buttons to filter posts
+  // tag buttons to filter posts **************************************
   const filterPosts = (tag) => {
     setOnAudio(false);
     if (!listRef.current.classList.contains('post-list-mobile-show')) {
@@ -130,6 +144,32 @@ function Blog() {
     }
   };
 
+  // make sure mobile height sizing is correct **************************************
+  function getWindowDimensions() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return { width, height };
+  }
+
+  function useWindowDimensions() {
+    const [windowDimensions, setWindowDimensions] = useState(
+      getWindowDimensions()
+    );
+    useEffect(() => {
+      function handleResize() {
+        setWindowDimensions(getWindowDimensions());
+      }
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+    return windowDimensions;
+  }
+
+  const { height, width } = useWindowDimensions();
+  useEffect(() => {
+    overallRef.current.style.height = height + 'px';
+  }, [height, width]);
+
+  // date conversion for proper display in timezones **************************************
   const convertDate = (post, type) => {
     const date = new Date(post.time);
     const createdAt = new Date(post.createdAt);
@@ -158,31 +198,6 @@ function Blog() {
     return type === 'numeric' ? numeric : words;
   };
 
-  // make sure mobile height sizing is correct
-  function getWindowDimensions() {
-    const { innerWidth: width, innerHeight: height } = window;
-    return { width, height };
-  }
-
-  function useWindowDimensions() {
-    const [windowDimensions, setWindowDimensions] = useState(
-      getWindowDimensions()
-    );
-    useEffect(() => {
-      function handleResize() {
-        setWindowDimensions(getWindowDimensions());
-      }
-      window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
-    }, []);
-    return windowDimensions;
-  }
-
-  const { height, width } = useWindowDimensions();
-  useEffect(() => {
-    overallRef.current.style.height = height + 'px';
-  }, [height, width]);
-
   return (
     <div id="overall" ref={overallRef}>
       <nav id="post-nav">
@@ -197,7 +212,7 @@ function Blog() {
         {onAudio
           ? audioList.map((audio, index) => (
               <h2 key={index}>
-                <button onClick={(e) => setCurrentAudio(audio.key)}>
+                <button onClick={(e) => handleAudio(audio)}>
                   {audio.lastModified.toString()}
                 </button>
               </h2>
@@ -225,6 +240,7 @@ function Blog() {
             <div
               id="post-markdown"
               contentEditable={true}
+              suppressContentEditableWarning={true}
               spellCheck={false}
               style={{
                 fontSize: `${fontSize}px`,
@@ -232,8 +248,15 @@ function Blog() {
                 lineHeight: `${lineHeight}`,
               }}
             >
-              {currentAudio ? (
-                currentAudio
+              {currentAudioSrc ? (
+                <div>
+                  <div>{currentAudioKey}</div>
+                  <audio
+                    controls
+                    src={currentAudioSrc}
+                    type="audio/mpeg"
+                  ></audio>
+                </div>
               ) : (
                 <p>
                   Welcome to Lawrence's thoughts, where he collects his random
