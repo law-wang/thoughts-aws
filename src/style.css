@@ -145,7 +145,7 @@ body {
   background-color: var(--white);
 }
 
-button {
+button:not(.preserve-button) {
   background: none;
   border: none;
   padding: 5px;
@@ -154,7 +154,7 @@ button {
 }
 
 @media (hover: hover) {
-  button:hover {
+  button:not(.preserve-button):hover {
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 1px;

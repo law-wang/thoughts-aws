@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { DataStore } from '@aws-amplify/datastore';
 
@@ -10,45 +10,41 @@ function Create({ user }) {
   const {
     register: registerPost,
     handleSubmit: handleSubmitPost,
-    formState: { errors: errorsPost },
     reset: resetPost,
   } = useForm();
 
   const {
     register: registerAudio,
     handleSubmit: handleSubmitAudio,
-    formState: { errors: errorsAudio },
     reset: resetAudio,
   } = useForm();
 
   const onSubmitPost = async (data) => {
     console.log(data);
 
-    // const newPost = await DataStore.save(
-    //   new Post({
-    //     content: data.Content,
-    //     tag: data.Tag,
-    //     time: new Date().toISOString(),
-    //   })
-    // );
-
+    const newPost = await DataStore.save(
+      new Post({
+        content: data.Content,
+        tag: data.Tag,
+        time: new Date().toISOString(),
+      })
+    );
+    console.log(newPost);
     resetPost();
   };
-  console.log(errorsPost);
 
-  const onSubmitAudio = async (data) => {
-    await console.log(data);
+  const audioSubmissionRef = useRef(null);
+  const onSubmitAudio = async (e) => {
+    e.preventDefault();
+    const file = audioSubmissionRef.current.files[0];
 
     // put our file in storage, use the file's name as its S3 Key
-    // Storage.put(file.name, file)
-    //   .then((item) => {
-    //     console.log(item);
-    //   })
-    //   .catch((err) => console.error(err));
-
-    resetAudio();
+    await Storage.put(file.name, file)
+      .then((item) => {
+        console.log(item);
+      })
+      .catch((err) => console.error(err));
   };
-  console.log(errorsAudio);
 
   const { setValue } = useForm({
     defaultValues: {
@@ -104,13 +100,23 @@ function Create({ user }) {
         <input type="submit" />
       </form>
 
-      <form onSubmit={handleSubmitAudio(onSubmitAudio)}>
+      {/* <form onSubmit={handleSubmitAudio(onSubmitAudio)}>
         <input
           {...registerAudio('File', { required: true })}
           type="file"
           accept=".mp3, .m4a"
         />
         <input type="submit" />
+      </form> */}
+
+      <form onSubmit={onSubmitAudio}>
+        <input
+          type="file"
+          accept=".mp3, .m4a"
+          ref={audioSubmissionRef}
+          required={true}
+        />
+        <button className="preserve-button">Submit</button>
       </form>
     </div>
   ) : (
