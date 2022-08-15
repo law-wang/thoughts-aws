@@ -71,8 +71,7 @@ function Blog() {
 
     // listen for datastore to be fully loaded, then make datastore queries
     const listener = Hub.listen('datastore', async (hubData) => {
-      const { event, data } = hubData.payload;
-      console.log(event, data);
+      const { event } = hubData.payload;
       if (event === 'ready') {
         getData();
       }
