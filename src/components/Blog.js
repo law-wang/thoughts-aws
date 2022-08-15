@@ -23,7 +23,6 @@ function Blog() {
 
   const [onAudio, setOnAudio] = useState(false);
   const [audioList, setAudioList] = useState([]);
-  const [audioKeys, setAudioKeys] = useState([]);
   const [currentAudioKey, setCurrentAudioKey] = useState(null);
   const [currentAudioSrc, setCurrentAudioSrc] = useState(null);
 
@@ -64,22 +63,16 @@ function Blog() {
         // get bucket content and save to state
         Storage.list('').then((result) => {
           setAudioList(result);
-          console.log(result);
-          setAudioKeys(result.map((item) => item.key)); // save result's keys to state
         });
       } catch (err) {
         console.error(err);
       }
-
-      console.log(audioList);
-      console.log(audioKeys);
     };
 
     // listen for datastore to be fully loaded, then make datastore queries
     const listener = Hub.listen('datastore', async (hubData) => {
       const { event, data } = hubData.payload;
-      // console.log(event)
-      // console.log(data)
+      console.log(event, data);
       if (event === 'ready') {
         getData();
       }
