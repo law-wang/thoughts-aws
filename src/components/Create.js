@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { DataStore } from '@aws-amplify/datastore';
 import { Storage } from '@aws-amplify/storage';
@@ -28,6 +28,7 @@ function Create({ user }) {
   };
 
   const audioSubmissionRef = useRef(null);
+  const [audio, setAudio] = useState('');
   const onSubmitAudio = async (e) => {
     e.preventDefault();
     const file = audioSubmissionRef.current.files[0];
@@ -38,6 +39,7 @@ function Create({ user }) {
         console.log(item);
       })
       .catch((err) => console.error(err));
+    setAudio('');
   };
 
   return user ? (
@@ -87,6 +89,8 @@ function Create({ user }) {
           accept=".mp3, .m4a"
           ref={audioSubmissionRef}
           required={true}
+          value={audio}
+          onChange={(e) => setAudio(e.target.value)}
         />
         <button className="preserve-button" style={{ marginTop: '10px' }}>
           Submit
