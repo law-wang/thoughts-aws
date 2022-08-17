@@ -133,6 +133,8 @@ function Blog() {
       setDisplayedPosts(quotes);
     } else if (tag === 'all') {
       setDisplayedPosts(allposts);
+    } else if (tag === 'audio') {
+      setOnAudio(true);
     }
   };
 
@@ -197,7 +199,7 @@ function Blog() {
         <button onClick={(e) => filterPosts('thoughts')}>Thoughts</button>
         <button onClick={(e) => filterPosts('playlists')}>Playlists</button>
         <button onClick={(e) => filterPosts('quotes')}>Quotes</button>
-        <button onClick={(e) => setOnAudio(true)}>Audio</button>
+        <button onClick={(e) => filterPosts('audio')}>Audio</button>
       </nav>
 
       <div id="post-list" ref={listRef}>

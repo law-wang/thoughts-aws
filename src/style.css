@@ -218,6 +218,13 @@ button:not(.preserve-button) {
   padding-left: 5px;
 }
 
+@media screen and (max-width: 450px) {
+  #post-list > h2 > button {
+    max-width: 80%;
+    text-align: left;
+  }
+}
+
 #post-list > *:first-child {
   margin-top: 5px;
 }
