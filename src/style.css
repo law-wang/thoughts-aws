@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'SimSun';
+  src: url(./SIMSUN.ttf) format('truetype');
+}
+
 /* CSS RESET */
 html,
 body,
