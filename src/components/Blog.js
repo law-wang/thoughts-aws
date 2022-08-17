@@ -153,6 +153,9 @@ function Blog() {
         setWindowDimensions(getWindowDimensions());
       }
       window.addEventListener('resize', handleResize);
+      if (windowDimensions.width < 850) {
+        setFontSize([65]);
+      }
       return () => window.removeEventListener('resize', handleResize);
     }, []);
     return windowDimensions;
