@@ -1,0 +1,14 @@
+{
+  "resourceName": "s3ferraristorage",
+  "bucketName": "ferrari-storage",
+  "policyUUID": "a0682875",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}

@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Storage } from '@aws-amplify/storage';
 import { Amplify } from 'aws-amplify';
 
-import { Slider } from '@material-ui/core';
+import { Slider } from '@mui/material';
 import { marked } from 'marked';
 import { sanitize } from 'dompurify';
 
@@ -99,7 +99,7 @@ function Blog() {
     const html = marked.parse(currentPost.content);
     const sanitized = html
       ? sanitize(html)
-      : "<p>Welcome to Lawrence's thoughts, where he collects his random daily ideas and playlists and audio clips and quotes. It's built with Create React App and AWS, and the design is inspired by type foundry websites, so you can edit the text and change its appearance :)</p>";
+      : "<p>This is the wall onto which I throw my random daily ideas and playlists and audio clips and quotes. It's built with Create React App and AWS, and the design is inspired by type foundry websites, so you can edit the text and change its appearance :)</p>";
     setCurrentHTML(sanitized);
     setCurrentTime(currentPost.time ? convertDate(currentPost, 'words') : '');
   }, [currentPost]);
