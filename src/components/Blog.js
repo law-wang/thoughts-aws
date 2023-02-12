@@ -256,11 +256,11 @@ function Blog() {
                 </div>
               ) : (
                 <p>
-                  Welcome to Lawrence's thoughts, where he collects his random
-                  daily ideas and playlists and audio clips and quotes. It's
-                  built with Create React App and AWS, and the design is
-                  inspired by type foundry websites, so you can edit the text
-                  and change its appearance :&#41;
+                  This is the wall onto which I throw my random daily ideas and
+                  playlists and audio clips and quotes. It's built with Create
+                  React App and AWS, and the design is inspired by type foundry
+                  websites, so you can edit the text and change its appearance
+                  :&#41;
                 </p>
               )}
             </div>
