@@ -13,7 +13,7 @@ import './style.css';
 Amplify.configure({
   ...awsconfig,
   DataStore: {
-    authModeStrategyType: AuthModeStrategyType.DEFAULT,
+    authModeStrategyType: AuthModeStrategyType.MULTI_AUTH,
   },
 });
 
