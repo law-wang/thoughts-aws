@@ -1,13 +1,10 @@
 {
-  "CreateAPIKey": 0,
+  "CreateAPIKey": 1,
   "AppSyncApiName": "amplifyDatasource",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": "false",
   "AuthCognitoUserPoolId": {
-    "Fn::GetAtt": [
-      "authferrari",
-      "Outputs.UserPoolId"
-    ]
+    "Fn::GetAtt": ["authferrari", "Outputs.UserPoolId"]
   },
-  "AuthModeLastUpdated": "2023-02-12T20:58:54.793Z"
+  "AuthModeLastUpdated": "2023-02-12T21:27:28.311Z"
 }
