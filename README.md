@@ -1,3 +1,3 @@
-# Lawrence's [Thoughts](https://thoughts.rence.la)
+# Lawrence's [Wall](https://wall.rence.la)
 
 using AWS Amplify, Create React App
