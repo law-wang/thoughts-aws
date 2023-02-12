@@ -3,9 +3,7 @@
   "serviceConfiguration": {
     "serviceName": "AppSync",
     "defaultAuthType": {
-      "mode": "API_KEY",
-      "keyDescription": "api key description",
-      "expirationTime": 30
+      "mode": "AWS_IAM"
     },
     "conflictResolution": {
       "defaultResolutionStrategy": {
@@ -15,11 +13,14 @@
     "apiName": "amplifyDatasource",
     "additionalAuthTypes": [
       {
-        "mode": "AWS_IAM"
-      },
-      {
         "mode": "AMAZON_COGNITO_USER_POOLS",
         "cognitoUserPoolId": "authferrari"
+      },
+      {
+        "mode": "API_KEY",
+        "expirationTime": 30,
+        "apiKeyExpirationDate": "2023-03-14T20:01:49.142Z",
+        "keyDescription": "GraphQL API Key"
       }
     ]
   }
