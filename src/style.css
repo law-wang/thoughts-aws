@@ -140,9 +140,9 @@ table {
   font-family: 'Times New Roman', 'SimSun', 'STSong', serif !important;
   color: var(--blue) !important;
   font-size: 20px;
-  -moz-animation: fadein 0.5s;
-  -webkit-animation: fadein 0.5s;
-  animation: fadein 0.5s;
+  -moz-animation: fadein 0.3s;
+  -webkit-animation: fadein 0.3s;
+  animation: fadein 0.3s;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
@@ -162,7 +162,7 @@ button:not(.preserve-button) {
   button:not(.preserve-button):hover {
     text-decoration: underline;
     text-decoration-thickness: 1px;
-    text-underline-offset: 1px;
+    text-underline-offset: 2px;
   }
 }
 
@@ -220,7 +220,24 @@ button:not(.preserve-button) {
   grid-area: lst;
   height: 100%;
   overflow-y: auto;
-  padding-left: 5px;
+}
+
+#post-list > h2 {
+  padding: 0 0 0 5px;
+  border-bottom: 1px solid var(--blue);
+  transition: background-color 0.3s;
+}
+
+#post-list > h2:hover {
+  background-color: var(--blue);
+}
+
+#post-list > h2 > button {
+  transition: color 0.3s;
+}
+
+#post-list > h2 > button:hover {
+  color: var(--white) !important;
 }
 
 @media screen and (max-width: 450px) {
@@ -228,14 +245,6 @@ button:not(.preserve-button) {
     max-width: 80%;
     text-align: left;
   }
-}
-
-#post-list > *:first-child {
-  margin-top: 5px;
-}
-
-#post-list > *:last-child {
-  margin-bottom: 5px;
 }
 
 .post-list-mobile-close {
