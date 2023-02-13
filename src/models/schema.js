@@ -100,7 +100,8 @@ export const schema = {
             "values": [
                 "THOUGHTS",
                 "PLAYLISTS",
-                "QUOTES"
+                "QUOTES",
+                "AUDIO"
             ]
         }
     },

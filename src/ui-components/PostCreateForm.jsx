@@ -210,6 +210,11 @@ export default function PostCreateForm(props) {
           value="QUOTES"
           {...getOverrideProps(overrides, "tagoption2")}
         ></option>
+        <option
+          children="Audio"
+          value="AUDIO"
+          {...getOverrideProps(overrides, "tagoption3")}
+        ></option>
       </SelectField>
       <TextField
         label="Audio"

@@ -5,7 +5,8 @@ import { LazyLoading, LazyLoadingDisabled } from "@aws-amplify/datastore";
 export enum Tag {
   THOUGHTS = "THOUGHTS",
   PLAYLISTS = "PLAYLISTS",
-  QUOTES = "QUOTES"
+  QUOTES = "QUOTES",
+  AUDIO = "AUDIO"
 }
 
 type PostMetaData = {

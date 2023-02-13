@@ -5,7 +5,8 @@ import { schema } from './schema';
 const Tag = {
   "THOUGHTS": "THOUGHTS",
   "PLAYLISTS": "PLAYLISTS",
-  "QUOTES": "QUOTES"
+  "QUOTES": "QUOTES",
+  "AUDIO": "AUDIO"
 };
 
 const { Post } = initSchema(schema);

@@ -79,6 +79,15 @@ function Create({ user }) {
           />
           <label htmlFor="quotes">Quotes</label>
         </div>
+        <div>
+          <input
+            id="quotes"
+            {...registerPost('Tag', { required: true })}
+            type="radio"
+            value={Tag.AUDIO}
+          />
+          <label htmlFor="quotes">Audio</label>
+        </div>
         <input type="submit" />
       </form>
 
