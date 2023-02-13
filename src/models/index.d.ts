@@ -17,6 +17,7 @@ type EagerPost = {
   readonly time: string;
   readonly content?: string | null;
   readonly tag?: Tag | keyof typeof Tag | null;
+  readonly audio?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -26,6 +27,7 @@ type LazyPost = {
   readonly time: string;
   readonly content?: string | null;
   readonly tag?: Tag | keyof typeof Tag | null;
+  readonly audio?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

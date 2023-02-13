@@ -33,21 +33,25 @@ export default function PostCreateForm(props) {
     time: undefined,
     content: undefined,
     tag: undefined,
+    audio: undefined,
   };
   const [time, setTime] = React.useState(initialValues.time);
   const [content, setContent] = React.useState(initialValues.content);
   const [tag, setTag] = React.useState(initialValues.tag);
+  const [audio, setAudio] = React.useState(initialValues.audio);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setTime(initialValues.time);
     setContent(initialValues.content);
     setTag(initialValues.tag);
+    setAudio(initialValues.audio);
     setErrors({});
   };
   const validations = {
     time: [{ type: "Required" }],
     content: [],
     tag: [],
+    audio: [{ type: "URL" }],
   };
   const runValidationTasks = async (fieldName, value) => {
     let validationResponse = validateField(value, validations[fieldName]);
@@ -70,6 +74,7 @@ export default function PostCreateForm(props) {
           time,
           content,
           tag,
+          audio,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -122,6 +127,7 @@ export default function PostCreateForm(props) {
               time: value,
               content,
               tag,
+              audio,
             };
             const result = onChange(modelFields);
             value = result?.time ?? value;
@@ -147,6 +153,7 @@ export default function PostCreateForm(props) {
               time,
               content: value,
               tag,
+              audio,
             };
             const result = onChange(modelFields);
             value = result?.content ?? value;
@@ -173,6 +180,7 @@ export default function PostCreateForm(props) {
               time,
               content,
               tag: value,
+              audio,
             };
             const result = onChange(modelFields);
             value = result?.tag ?? value;
@@ -203,6 +211,32 @@ export default function PostCreateForm(props) {
           {...getOverrideProps(overrides, "tagoption2")}
         ></option>
       </SelectField>
+      <TextField
+        label="Audio"
+        isRequired={false}
+        isReadOnly={false}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              time,
+              content,
+              tag,
+              audio: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.audio ?? value;
+          }
+          if (errors.audio?.hasError) {
+            runValidationTasks("audio", value);
+          }
+          setAudio(value);
+        }}
+        onBlur={() => runValidationTasks("audio", audio)}
+        errorMessage={errors.audio?.errorMessage}
+        hasError={errors.audio?.hasError}
+        {...getOverrideProps(overrides, "audio")}
+      ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}

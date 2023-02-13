@@ -17,11 +17,13 @@ export declare type PostUpdateFormInputValues = {
     time?: string;
     content?: string;
     tag?: string;
+    audio?: string;
 };
 export declare type PostUpdateFormValidationValues = {
     time?: ValidationFunction<string>;
     content?: ValidationFunction<string>;
     tag?: ValidationFunction<string>;
+    audio?: ValidationFunction<string>;
 };
 export declare type FormProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type PostUpdateFormOverridesProps = {
@@ -29,6 +31,7 @@ export declare type PostUpdateFormOverridesProps = {
     time?: FormProps<TextFieldProps>;
     content?: FormProps<TextFieldProps>;
     tag?: FormProps<SelectFieldProps>;
+    audio?: FormProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type PostUpdateFormProps = React.PropsWithChildren<{
     overrides?: PostUpdateFormOverridesProps | undefined | null;

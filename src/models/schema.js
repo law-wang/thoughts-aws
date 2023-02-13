@@ -33,6 +33,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "audio": {
+                    "name": "audio",
+                    "isArray": false,
+                    "type": "AWSURL",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -99,5 +106,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.3.1",
-    "version": "85e63ca9634c88d38aa07488fd74372c"
+    "version": "f4c0f0fef142324be77bba188576c137"
 };
