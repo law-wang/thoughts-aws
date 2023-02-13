@@ -150,6 +150,12 @@ body {
   background-color: var(--white);
 }
 
+::-moz-selection,
+::selection {
+  color: var(--white);
+  background: var(--blue);
+}
+
 button:not(.preserve-button) {
   background: none;
   border: none;
@@ -236,7 +242,7 @@ button:not(.preserve-button) {
   transition: color 0.3s;
 }
 
-#post-list > h2 > button:hover {
+#post-list > h2:hover > button {
   color: var(--white) !important;
 }
 

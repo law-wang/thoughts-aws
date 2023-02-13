@@ -20,6 +20,7 @@ function Blog() {
   const [thoughts, setThoughts] = useState([]);
   const [playlists, setPlaylists] = useState([]);
   const [quotes, setQuotes] = useState([]);
+  const [audios, setAudios] = useState([]);
 
   const [onAudio, setOnAudio] = useState(false);
   const [audioList, setAudioList] = useState([]);
@@ -29,6 +30,7 @@ function Blog() {
   const [currentPost, setCurrentPost] = useState({ content: '' });
   const [currentHTML, setCurrentHTML] = useState('');
   const [currentTime, setCurrentTime] = useState('');
+  const [currentAudio, setCurrentAudio] = useState('');
 
   // hook for grabbing data, only run once **************************************
   useEffect(() => {
@@ -54,11 +56,15 @@ function Blog() {
         const quotes = sortedPosts.filter((p) => {
           return p.tag === Tag.QUOTES;
         });
+        const audios = sortedPosts.filter((p) => {
+          return p.tag === Tag.AUDIO;
+        });
 
         setAllPosts(sortedPosts);
         setThoughts(thoughts);
         setPlaylists(playlists);
         setQuotes(quotes);
+        setAudios(audios);
 
         // get bucket content and save to state
         Storage.list('').then((result) => {
@@ -102,6 +108,7 @@ function Blog() {
       : "<p>This is the wall onto which I throw my random daily ideas and playlists and audio clips and quotes. It's built with Create React App and AWS, and the design is inspired by type foundry websites, so you can edit the text and change its appearance :)</p>";
     setCurrentHTML(sanitized);
     setCurrentTime(currentPost.time ? convertDate(currentPost, 'words') : '');
+    setCurrentAudio(currentPost.audio ? currentPost.audio : '');
   }, [currentPost]);
 
   const listRef = useRef(null);
@@ -133,8 +140,8 @@ function Blog() {
       setDisplayedPosts(quotes);
     } else if (tag === 'all') {
       setDisplayedPosts(allposts);
-    } else if (tag === 'audio') {
-      setOnAudio(true);
+    } else if (tag === 'audios') {
+      setDisplayedPosts(audios);
     }
   };
 
@@ -202,7 +209,8 @@ function Blog() {
         <button onClick={(e) => filterPosts('thoughts')}>Thoughts</button>
         <button onClick={(e) => filterPosts('playlists')}>Playlists</button>
         <button onClick={(e) => filterPosts('quotes')}>Quotes</button>
-        <button onClick={(e) => filterPosts('audio')}>Audio</button>
+        <button onClick={(e) => filterPosts('audios')}>Audio</button>
+        {/* <button onClick={(e) => filterPosts('audio')}>Audio</button> */}
       </nav>
 
       <div id="post-list" ref={listRef}>
@@ -277,6 +285,9 @@ function Blog() {
                 }}
                 dangerouslySetInnerHTML={{ __html: currentHTML }}
               />
+              <div>
+                <audio controls src={currentAudio} type="audio/mpeg"></audio>
+              </div>
               <div id="post-time" style={{ marginBottom: '30px' }}>
                 {currentTime}
               </div>
