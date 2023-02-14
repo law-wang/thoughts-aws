@@ -1,7 +1,7 @@
 import { DataStore } from '@aws-amplify/datastore';
 import { Hub } from '@aws-amplify/core';
 import { useEffect, useState, useRef } from 'react';
-import { Storage } from '@aws-amplify/storage';
+// import { Storage } from '@aws-amplify/storage';
 import { Amplify } from 'aws-amplify';
 
 import { Slider } from '@mui/material';
@@ -21,11 +21,6 @@ function Blog() {
   const [playlists, setPlaylists] = useState([]);
   const [quotes, setQuotes] = useState([]);
   const [audios, setAudios] = useState([]);
-
-  const [onAudio, setOnAudio] = useState(false);
-  const [audioList, setAudioList] = useState([]);
-  const [currentAudioKey, setCurrentAudioKey] = useState(null);
-  const [currentAudioSrc, setCurrentAudioSrc] = useState(null);
 
   const [currentPost, setCurrentPost] = useState({ content: '' });
   const [currentHTML, setCurrentHTML] = useState('');
@@ -67,9 +62,9 @@ function Blog() {
         setAudios(audios);
 
         // get bucket content and save to state
-        Storage.list('').then((result) => {
-          setAudioList(result);
-        });
+        // Storage.list('').then((result) => {
+        //   setAudioList(result);
+        // });
       } catch (err) {
         console.error(err);
       }
@@ -88,17 +83,6 @@ function Blog() {
       listener();
     };
   }, []);
-
-  // handle changing audio content that is displayed **************************************
-  const handleAudio = async (audio) => {
-    setCurrentAudioKey(audio.key);
-    await Storage.get(audio.key)
-      .then((result) => {
-        const sanitizedSrc = result.toString().split('?')[0];
-        setCurrentAudioSrc(sanitizedSrc);
-      })
-      .catch((err) => console.log(err));
-  };
 
   // hook for changing post content that is displayed **************************************
   useEffect(() => {
@@ -127,7 +111,6 @@ function Blog() {
 
   // tag buttons to filter posts **************************************
   const filterPosts = (tag) => {
-    setOnAudio(false);
     if (!listRef.current.classList.contains('post-list-mobile-show')) {
       listRef.current.classList.add('mobile-show');
       buttonRef.current.classList.add('close-button-show');
@@ -207,28 +190,19 @@ function Blog() {
       <nav id="post-nav">
         <button onClick={(e) => filterPosts('all')}>All</button>
         <button onClick={(e) => filterPosts('thoughts')}>Thoughts</button>
-        <button onClick={(e) => filterPosts('playlists')}>Playlists</button>
+        {/* <button onClick={(e) => filterPosts('playlists')}>Playlists</button> */}
         <button onClick={(e) => filterPosts('quotes')}>Quotes</button>
         <button onClick={(e) => filterPosts('audios')}>Audio</button>
-        {/* <button onClick={(e) => filterPosts('audio')}>Audio</button> */}
       </nav>
 
       <div id="post-list" ref={listRef}>
-        {onAudio
-          ? audioList.map((audio, index) => (
-              <h2 key={index}>
-                <button onClick={(e) => handleAudio(audio)}>
-                  {audio.lastModified.toString()}
-                </button>
-              </h2>
-            ))
-          : displayedPosts.map((post) => (
-              <h2 key={post.id}>
-                <button onClick={(e) => setCurrentPost(post)}>
-                  {post.time ? convertDate(post, 'numeric') : 'a note'}
-                </button>
-              </h2>
-            ))}
+        {displayedPosts.map((post) => (
+          <h2 key={post.id}>
+            <button onClick={(e) => setCurrentPost(post)}>
+              {post.time ? convertDate(post, 'numeric') : 'a note'}
+            </button>
+          </h2>
+        ))}
       </div>
 
       <button
@@ -241,58 +215,27 @@ function Blog() {
 
       <div id="post-content">
         <div id="post-area">
-          {onAudio ? (
-            <div
-              id="post-markdown"
-              contentEditable={true}
-              suppressContentEditableWarning={true}
-              spellCheck={false}
-              style={{
-                fontSize: `${fontSize}px`,
-                letterSpacing: `${letterSpacing}em`,
-                lineHeight: `${lineHeight}`,
-              }}
-            >
-              {currentAudioSrc ? (
-                <div>
-                  <div>{currentAudioKey}</div>
-                  <audio
-                    controls
-                    src={currentAudioSrc}
-                    type="audio/mpeg"
-                  ></audio>
-                </div>
-              ) : (
-                <p>
-                  This is the wall onto which I throw my random daily ideas and
-                  playlists and audio clips and quotes. It's built with Create
-                  React App and AWS, and the design is inspired by type foundry
-                  websites, so you can edit the text and change its appearance
-                  :&#41;
-                </p>
-              )}
+          <div
+            id="post-markdown"
+            contentEditable={true}
+            spellCheck={false}
+            style={{
+              fontSize: `${fontSize}px`,
+              letterSpacing: `${letterSpacing}em`,
+              lineHeight: `${lineHeight}`,
+            }}
+            dangerouslySetInnerHTML={{ __html: currentHTML }}
+          />
+
+          {currentAudio && (
+            <div>
+              <audio controls src={currentAudio} type="audio/mpeg"></audio>
             </div>
-          ) : (
-            <>
-              <div
-                id="post-markdown"
-                contentEditable={true}
-                spellCheck={false}
-                style={{
-                  fontSize: `${fontSize}px`,
-                  letterSpacing: `${letterSpacing}em`,
-                  lineHeight: `${lineHeight}`,
-                }}
-                dangerouslySetInnerHTML={{ __html: currentHTML }}
-              />
-              <div>
-                <audio controls src={currentAudio} type="audio/mpeg"></audio>
-              </div>
-              <div id="post-time" style={{ marginBottom: '30px' }}>
-                {currentTime}
-              </div>
-            </>
           )}
+
+          <div id="post-time" style={{ marginBottom: '30px' }}>
+            {currentTime}
+          </div>
         </div>
 
         <div id="post-resize">
