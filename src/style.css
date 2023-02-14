@@ -238,16 +238,18 @@ button:not(.preserve-button) {
   transition: background-color 0.3s;
 }
 
-#post-list > h2:hover {
-  background-color: var(--blue);
-}
-
 #post-list > h2 > button {
   transition: color 0.3s;
 }
 
-#post-list > h2:hover > button {
-  color: var(--white) !important;
+@media (hover: hover) {
+  #post-list > h2:hover {
+    background-color: var(--blue);
+  }
+
+  #post-list > h2:hover > button {
+    color: var(--white) !important;
+  }
 }
 
 @media screen and (max-width: 450px) {
