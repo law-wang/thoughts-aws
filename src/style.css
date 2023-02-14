@@ -150,10 +150,14 @@ body {
   background-color: var(--white);
 }
 
-::-moz-selection,
+::-moz-selection {
+  color: var(--white) !important;
+  background: var(--blue) !important;
+}
+
 ::selection {
-  color: var(--white);
-  background: var(--blue);
+  color: var(--white) !important;
+  background: var(--blue) !important;
 }
 
 button:not(.preserve-button) {
