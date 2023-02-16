@@ -235,10 +235,12 @@ button:not(.preserve-button) {
 #post-list > h2 {
   padding: 0 0 0 5px;
   border-bottom: 1px solid var(--blue);
+  background-color: var(--white);
   transition: background-color 0.3s;
 }
 
 #post-list > h2 > button {
+  color: var(--blue);
   transition: color 0.3s;
 }
 
