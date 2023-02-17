@@ -25,6 +25,7 @@ function Blog() {
   const [currentPost, setCurrentPost] = useState({ content: '' });
   const [currentHTML, setCurrentHTML] = useState('');
   const [currentTime, setCurrentTime] = useState('');
+  const [currentTag, setCurrentTag] = useState('');
   const [currentAudio, setCurrentAudio] = useState('');
 
   // hook for grabbing data, only run once **************************************
@@ -93,6 +94,15 @@ function Blog() {
     setCurrentHTML(sanitized);
     setCurrentTime(currentPost.time ? convertDate(currentPost, 'words') : '');
     setCurrentAudio(currentPost.audio ? currentPost.audio : '');
+    if (currentPost.tag === Tag.AUDIO) {
+      setCurrentTag('an Audio');
+    } else if (currentPost.tag === Tag.PLAYLISTS) {
+      setCurrentTag('a Playlist');
+    } else if (currentPost.tag === Tag.QUOTES) {
+      setCurrentTag('a Quote');
+    } else if (currentPost.tag === Tag.THOUGHTS) {
+      setCurrentTag('a Thought');
+    }
   }, [currentPost]);
 
   const listRef = useRef(null);
@@ -233,9 +243,11 @@ function Blog() {
             </div>
           )}
 
-          <div id="post-time" style={{ marginBottom: '30px' }}>
-            {currentTime}
-          </div>
+          {currentTag && (
+            <div id="post-time" style={{ marginBottom: '30px' }}>
+              Recorded on {currentTime} as {currentTag}
+            </div>
+          )}
         </div>
 
         <div id="post-resize">
