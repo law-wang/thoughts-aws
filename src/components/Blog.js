@@ -200,7 +200,7 @@ function Blog() {
       <nav id="post-nav">
         <button onClick={(e) => filterPosts('all')}>All</button>
         <button onClick={(e) => filterPosts('thoughts')}>Thoughts</button>
-        <button onClick={(e) => filterPosts('playlists')}>Playlists</button>
+        {/* <button onClick={(e) => filterPosts('playlists')}>Playlists</button> */}
         <button onClick={(e) => filterPosts('quotes')}>Quotes</button>
         <button onClick={(e) => filterPosts('audios')}>Audio</button>
       </nav>
